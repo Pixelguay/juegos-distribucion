@@ -1,0 +1,773 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0;background:#1b2124}[hidden]{display:none!important}</style></head><body><title> Conductor eléctrico</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Work+Sans:wght@400;700&display=swap">
+<style>
+/* Ruta Solar: una célula solar de fondo (azul con líneas plateadas) y partes de trabajo de papel encima.
+   Look único y claro, decidido para que se lea muy bien. Todo cuelga de .rs para poder vivir dentro de Isla Solar. */
+.rs{--ink:#16202b;--ink2:#46535f;--cell:#23272e;--cell2:#323844;--bus:rgba(201,128,64,.22);--paper:#fff;--paper2:#f3f5f7;--line:#c9d2db;--sun:#ffc21a;--sun2:#d9730d;--good:#1b7f3b;--goodbg:#dff4e4;--bad:#b3261e;--badbg:#fde8e6;--ayuda:#1d3f7a;--tie:#1f7a4a;--sol:#c75f06;--pan:#1763a8;--hoj:#6b3fa0;
+  --fd:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--fb:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;--ff:"Noto Sans","Segoe UI",Arial,sans-serif;
+  position:fixed;inset:0;z-index:60;overflow:auto;-webkit-overflow-scrolling:touch;color:var(--ink);font-family:var(--fb);font-size:18px;line-height:1.42;
+  background:var(--cell);background-image:repeating-linear-gradient(90deg,transparent 0 118px,var(--bus) 118px 120px),repeating-linear-gradient(0deg,transparent 0 14px,rgba(205,222,240,.05) 14px 15px),linear-gradient(160deg,var(--cell2),var(--cell));background-attachment:local;color-scheme:light}
+.rs *{box-sizing:border-box}.rs img,.rs svg{max-width:100%;height:auto}.rs :where(button){font:inherit;color:inherit;cursor:pointer}.rs :focus-visible{outline:3px solid var(--sun2);outline-offset:2px}
+.rs sub{font-size:.68em;line-height:0}.rs h1,.rs h2,.rs h3{font-family:var(--fd);line-height:1.05;margin:0;text-wrap:balance;font-weight:700;letter-spacing:.005em}
+.rs p{margin:.3em 0}.r-in{max-width:1240px;margin:0 auto;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));padding-block:10px 40px}
+/* barra */
+.r-bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;color:#fff;margin-bottom:10px}.r-bar .sp{flex:1;min-width:10px}
+.r-back{background:#fff;color:var(--ink);border:0;border-radius:8px;padding:8px 14px;font-weight:700}
+.r-tt{font-family:var(--fd);font-size:22px;font-weight:700}.r-ico{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;width:40px;height:40px}
+.r-pips{display:flex;gap:4px;flex-wrap:wrap}.r-pips i{width:18px;height:8px;border-radius:2px;background:rgba(255,255,255,.25)}.r-pips i.ok{background:var(--sun)}.r-pips i.now{background:#fff}
+/* portada */
+.r-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:stretch;color:#fff;margin-bottom:16px}
+.r-hero h1{font-size:clamp(50px,9vw,92px);color:var(--sun);text-transform:uppercase}.r-lead{font-size:19px;max-width:44ch}
+.r-mapa{background:#0b2340;border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:6px;min-width:0}.r-mapa svg{display:block;width:100%}
+.r-st{display:flex;flex-wrap:wrap;gap:8px 20px;margin:12px 0}.r-st b{display:block;font-family:var(--fd);font-size:30px;color:var(--sun);line-height:1}.r-st span{font-size:14px;color:#cfdeec}
+.r-xp{height:10px;border-radius:5px;background:rgba(255,255,255,.2);overflow:hidden;max-width:360px}.r-xp i{display:block;height:100%;background:var(--sun)}
+.r-sec{color:#fff;font-family:var(--fd);font-size:26px;margin:20px 0 8px}.r-sec small{font-family:var(--fb);font-size:15px;color:#cfdeec;margin-left:8px;font-weight:400}
+.r-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.r-card{background:var(--paper);border-radius:8px;padding:12px;border-top:6px solid var(--k,#888);display:flex;flex-direction:column;gap:8px;min-width:0}
+.r-card h3{font-size:25px;color:var(--ink)}.r-card p{font-size:15.5px;color:var(--ink2);margin:0}.r-chead{display:flex;gap:10px;align-items:center}
+.r-av{flex:none;width:58px;height:58px;border-radius:50%;background:#f3f5f7;border:2px solid var(--k,#889);overflow:hidden;display:grid;place-items:center}.r-av img{width:92%;height:92%;object-fit:contain}
+.r-modos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto}
+.r-b{background:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;font-weight:700;text-align:center;min-height:44px}.r-b:hover{background:var(--paper2)}
+.r-b small{display:block;font-weight:400;font-size:13.5px;color:var(--ink2)}.r-b .est{color:var(--sun2);letter-spacing:1px;font-size:14px}
+.r-b.pri{background:var(--sun);}.r-b.pri:hover{background:#ffd147}.r-b.big{font-size:21px;padding:12px 22px}.r-link{background:none;border:0;color:#cfdeec;text-decoration:underline;font-size:15px}
+/* parte de trabajo */
+.r-parte{background:var(--paper);border-radius:8px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.r-cab{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:10px}.r-obra{font-family:var(--fd);font-size:21px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.r-org{font-size:13.5px;font-weight:700;padding:3px 9px;border-radius:5px;color:#fff}.r-org.toni{background:#1763a8}.r-org.inv{background:#6b3fa0}
+.r-dos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+.r-et{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink2);margin-bottom:3px}
+.r-caso{background:var(--paper2);border-radius:6px;padding:8px 12px;color:#37424d;font-size:18px}
+.r-preg{font-weight:700;font-size:22px;line-height:1.24;color:#000;margin-top:10px;padding:10px 12px;border:2px solid #000;border-radius:6px}
+.r-tok{display:inline-block;font-weight:700;background:#fff5c4;border:2px dashed #b78a00;border-radius:6px;padding:0 6px;color:#000;line-height:1.35;margin:1px 0}.r-tok.btn{background:#fff0a0;border-style:solid}.r-tok.btn:hover{background:var(--sun)}.r-tok.used{background:#e7f6ea;border-color:var(--good);border-style:solid}
+.r-dib{border:1px solid var(--line);border-radius:6px;padding:6px;background:#fff}.r-dib svg{display:block;width:100%;max-height:230px;font-family:var(--fb)}
+/* el papel */
+.r-papel{margin-top:12px;border:2px solid var(--ink);border-radius:6px;background:#fff}.r-pfila{display:grid;grid-template-columns:118px minmax(0,1fr);border-bottom:1px solid var(--line);min-height:40px}.r-pfila:last-child{border-bottom:0}
+.r-pfila>b{background:var(--paper2);padding:8px 10px;font-family:var(--fd);font-size:19px;border-right:1px solid var(--line)}.r-pfila.now>b{background:var(--sun)}.r-pc{padding:7px 12px;font-family:var(--ff);font-size:18px;color:#000;min-width:0;overflow-wrap:anywhere}
+.r-slot{display:inline-block;margin:1px 12px 1px 0}.r-slot.vacio{color:var(--ink2)}.r-slot.now{background:#fff5c4;border-radius:4px;padding:0 5px;outline:2px solid #b78a00}
+.r-amar{display:inline-block;background:#ffe45c;font-weight:700;padding:1px 10px;border-radius:4px;margin:1px 6px 1px 0}
+/* la acción */
+.r-acc{margin-top:10px;border-left:6px solid var(--sun);background:#fffbe9;padding:10px 12px;border-radius:0 6px 6px 0}.r-acc.ok{border-color:var(--good);background:var(--goodbg)}.r-acc.ko{border-color:var(--bad);background:var(--badbg)}
+.r-say{display:flex;gap:10px;align-items:flex-start}.r-say .r-av{width:52px;height:52px}.r-say>div:last-child{flex:1;min-width:0}.r-ins{font-weight:700;font-size:19px}
+.r-msg{margin-top:8px;padding:8px 12px;border-radius:6px;font-weight:700}.r-msg.ko{background:var(--badbg);color:#7b1a14}.r-msg.ok{background:var(--goodbg);color:#114f25}
+.r-opts{display:grid;gap:8px;margin-top:10px}.r-op{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px 12px;font-family:var(--ff);font-size:19px;font-weight:600;text-align:left;min-height:48px}.r-op:hover{background:var(--paper2)}.r-op .l{font-family:var(--fd);font-weight:700;background:var(--ink);color:#fff;border-radius:4px;padding:0 8px;flex:none}
+.r-op.mal{border-color:var(--bad);background:var(--badbg);opacity:.75}.r-op.bien{border-color:var(--good);background:var(--goodbg)}
+.fam-t{color:var(--tie);font-weight:700}.fam-s{color:var(--sol);font-weight:700}.fam-p{color:var(--pan);font-weight:700}.r-pc .fam-t,.r-pc .fam-s,.r-pc .fam-p{color:inherit}
+/* fichas de la fórmula */
+.r-monta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0;padding:10px;border:2px solid var(--ink);border-radius:6px;background:#fff;min-height:58px;font-family:var(--ff);font-size:21px;font-weight:700}
+.r-monta .h{color:var(--ink2);font-size:16px;font-weight:400;font-family:var(--fb)}
+.r-fichas{display:flex;flex-wrap:wrap;gap:7px}.r-f{background:#fff;border:2px solid var(--ink);border-bottom-width:4px;border-radius:7px;padding:6px 13px;font-family:var(--ff);font-size:21px;font-weight:700;min-width:44px;min-height:44px}.r-f:hover{background:#fff5c4}.r-f[disabled]{opacity:.22;cursor:default}
+.r-f.puesta{background:#fff5c4;font-size:20px}
+.r-res{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-family:var(--ff);font-size:21px;font-weight:700}
+.r-res input{width:170px;max-width:100%;font:inherit;padding:8px 10px;border:2px solid var(--ink);border-radius:7px;background:#fff;color:#000}
+.r-us{display:flex;flex-wrap:wrap;gap:5px}.r-u{background:#fff;border:2px solid var(--ink);border-radius:6px;padding:6px 10px;font-weight:700;font-size:16px;min-height:42px}.r-u.on{background:var(--ink);color:#fff}
+.r-num{font-family:var(--ff);margin-top:6px}.r-num b{background:#fff;border:1px solid var(--line);border-radius:4px;padding:1px 8px}
+.r-ayuda{color:var(--ayuda);font-style:italic;font-size:16px;margin-top:4px}
+.r-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.r-voz{margin-top:10px;background:#eef3fb;border-radius:6px;padding:8px 12px;display:flex;gap:10px;align-items:center}.r-voz>div{flex:1;min-width:0}.r-voz .e{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ayuda)}
+/* letras y minijuegos */
+.r-letra{font-family:var(--ff);font-size:72px;font-weight:700;text-align:center;line-height:1.1;padding:8px;color:#000}.r-letra small{display:block;font-size:22px;font-weight:600;color:var(--ink2)}
+.r-casas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}.r-casa{border:0;border-radius:8px;padding:14px 10px;color:#fff;font-family:var(--fd);font-size:25px;font-weight:700;background:var(--k);min-height:76px}.r-casa small{display:block;font-family:var(--fb);font-size:14px;font-weight:400}
+.r-tabla3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin:10px 0}.r-c3{border-radius:6px;padding:8px 10px;border:2px solid var(--k)}.r-c3 h3{color:var(--k);font-size:24px}.r-c3 small{color:var(--ink2);font-size:14px}.r-c3 div{font-family:var(--ff);font-size:18px;margin-top:3px}
+.r-gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin-top:10px}.r-gl .r-op{justify-content:center;text-align:center;flex-direction:column;gap:0;font-size:24px;padding:6px}.r-gl .r-op small{font-size:13.5px;font-weight:400;font-family:var(--fb)}
+.r-arc{cursor:pointer}.r-arc .h{pointer-events:stroke}.r-arc:hover path:last-child{stroke-width:8}.r-arc.on path:last-child{stroke-width:9}
+.r-tiempo{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:8px}.r-tiempo i{display:block;height:100%;background:var(--sun2);transition:width 1s linear}
+.r-tipos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin-top:10px}.r-tp{border:0;border-radius:8px;background:var(--k);color:#fff;padding:12px 8px;font-family:var(--fd);font-size:21px;font-weight:700;min-height:62px}.r-tp.mal{opacity:.35}.r-tp.bien{outline:4px solid #000}
+.r-lin{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--ink);border-radius:7px;padding:10px 12px;margin-top:7px;font-family:var(--ff);font-size:19px;font-weight:600}.r-lin:hover{background:#fff5c4}.r-lin.mal{background:var(--badbg);border-color:var(--bad)}.r-lin.tra{background:#fff}
+.r-gen-c{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:10px 0}.r-ctl{border:2px solid var(--ink);border-radius:6px;padding:8px 10px;text-align:center}.r-ctl b{font-family:var(--ff);font-size:17px}.r-ctl .v{font-family:var(--fd);font-size:44px;font-weight:700;line-height:1}.r-ctl button{width:48px;height:48px;border:2px solid var(--ink);border-radius:8px;background:#fff;font-size:26px;font-weight:700;margin:0 6px}
+.r-med{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0}.r-med div{background:#101a24;color:#7bf0a0;border-radius:5px;padding:6px 8px;text-align:center;font-family:ui-monospace,Consolas,monospace;font-size:20px;font-weight:700}.r-med small{display:block;color:#cfdeec;font-size:13px;font-weight:400;font-family:var(--fb)}.r-med div.no{color:#ffb4ab}
+.r-fin{text-align:center}.r-fin h2{font-size:42px}.r-star{font-size:48px;color:var(--sun2);letter-spacing:4px;line-height:1}
+.r-take{text-align:left;margin:10px 0;background:#fffbe9;border-radius:6px;padding:10px 12px;font-family:var(--ff)}.r-take div{margin:3px 0}
+.r-t{width:100%;border-collapse:collapse;font-size:15.5px;margin-top:8px}.r-t th,.r-t td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}.r-t th{background:var(--paper2)}.r-tw{overflow-x:auto}
+.r-toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#101a24;color:#fff;padding:9px 16px;border-radius:8px;z-index:70;font-weight:700;max-width:90vw}
+textarea.r-copia{width:100%;height:120px;font-size:13px;margin-top:8px}
+@media(max-width:760px){.r-hero,.r-dos{grid-template-columns:minmax(0,1fr)}.r-pfila{grid-template-columns:96px minmax(0,1fr)}.r-pfila>b{font-size:17px;padding:8px 6px}.r-preg{font-size:20px}.r-grid{grid-template-columns:minmax(0,1fr)}.r-letra{font-size:60px}}
+@media(prefers-reduced-motion:reduce){.rs *{transition:none!important;animation:none!important}}
+
+/* Ruta de la Corriente: pestañas de esquemas, aviso de esquema, talleres */
+.r-esqs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0 0 6px}
+.r-esqs.uno{grid-template-columns:1fr}
+.r-esqs>*{border:2px solid var(--line);background:var(--paper2);border-radius:7px;padding:5px 8px;text-align:left;line-height:1.15;color:var(--ink2)}
+.r-esqs b{display:block;font-family:var(--fd);font-size:19px}.r-esqs small{font-size:13px}
+.r-esqs .on{border-color:var(--sun2);background:#fff4d6;color:var(--ink)}
+.r-dib svg{max-height:300px}
+.r-aviso{background:#16202b;color:#fff;border-left:6px solid var(--sun);border-radius:6px;padding:8px 12px;margin-bottom:8px;font-weight:700}
+.r-av{font-size:30px;background:#fff4d6;border-color:var(--sun2)}
+.r-pue{display:flex;flex-wrap:wrap;gap:6px;padding:8px}
+.r-pue span{font-size:13px;padding:4px 8px;border-radius:14px;background:rgba(255,255,255,.08);color:#9aa6b4;filter:grayscale(1)}
+.r-pue span.on{background:var(--sun);color:#16202b;font-weight:700;filter:none}
+.r-jn{font-family:var(--fd);font-size:18px;color:var(--sun);letter-spacing:.04em}
+.r-hero h1{font-size:clamp(44px,6.5vw,76px)}
+.r-met-t{color:#fff;padding:10px 12px 0}
+.r-met{margin:4px 0 8px;padding:0 14px 0 34px;color:#fff;font-size:17px;line-height:1.5}.r-met li{margin:3px 0}.r-met li::marker{color:var(--sun);font-weight:700}
+.rs .r-pue{margin-top:16px}
+a.r-back{text-decoration:none;display:inline-block}
+
+.rs{--cell:#1b2124;--cell2:#28343a;--bus:rgba(200,224,74,.16);--sun:#c8e04a;--sun2:#3d7d2a;--fd:"Saira Stencil One","Arial Narrow",Arial,sans-serif;--fb:"Work Sans",Verdana,system-ui,sans-serif;--ff:"Work Sans",Verdana,sans-serif;
+  background:var(--cell);background-image:repeating-linear-gradient(90deg,transparent 0 118px,var(--bus) 118px 120px),repeating-linear-gradient(0deg,transparent 0 14px,rgba(255,255,255,.04) 14px 15px),linear-gradient(160deg,var(--cell2),var(--cell));background-size:auto;background-attachment:local}
+.r-mapa{background:rgba(0,0,0,.28)}.r-card{border-top-color:var(--sun2)}.r-av{border-color:var(--sun2)}
+</style>
+<div id="ruta"></div>
+<script>
+const JUEGO=(function(){
+// Juegos de problemas de Distribución · piezas comunes a los 9 tipos (cuentas, fórmulas, números).
+// Cada tipo (t_*.js) define TIPO con sus problemas, su dibujo y su tema; motor.js lo juega.
+
+const LUGARES = ['Taller de Tremañes','Nave de Porceyo','Astillero de El Musel','Sidrería de Villaviciosa','Carpintería de Llanera','Taller de La Calzada',
+ 'Panadería de La Pola','Fábrica de Lugones','Serrería de Grado','Taller de Mieres','Lagar de Nava','Quesería de Cabrales','Conservera de Candás',
+ 'Taller de Luanco','Lonja de Cudillero','Granja de Siero','Imprenta de Oviedo','Lavandería de Avilés','Talleres de Langreo','Bodega de Cangas',
+ 'Garaje de Roces','Cocina de Cimadevilla','Nave de Tabaza','Taller de Infiesto'];
+const MAQ = [['Una amasadora','a'],['Un torno','o'],['Una lavadora industrial','a'],['Una sierra de cinta','a'],['Un compresor','o'],['Una bomba de agua','a'],
+ ['Una prensa','a'],['Un taladro de columna','o'],['Una cámara frigorífica','a'],['Una esmeriladora','a']];
+
+function es(x, d = 2) {
+  const neg = x < 0; const a = Math.abs(x);
+  let s = (Math.round((a + 1e-9) * 10 ** d) / 10 ** d).toFixed(d);
+  if (d > 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+  let [e, f] = s.split('.');
+  e = e.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return (neg && +s !== 0 ? '−' : '') + e + (f ? ',' + f : '');
+}
+function rnd(a, b, step = 1) { const n = Math.round((b - a) / step); return +(a + Math.floor(Math.random() * (n + 1)) * step).toFixed(6); }
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+const om = x => es(x, 0) + ' Ω';
+const MA = {mA:1000};
+const U_R = ['Ω', 'V', 'A'], U_I = ['A', 'mA', 'V'], U_V = ['V', 'A', 'Ω'];
+const SIN = 'sin unidad';
+
+function calc(k, f, nums, val, dec, unit, units, opt = {}) {
+  return Object.assign({k, lhs:k, f: f.split(' '), nums, val, dec, unit, units, alts: [], mal: [], extra: [], trap: [], esq:1}, opt);
+}
+// Pregunta con opciones. malas = [[texto, por qué está mal], ...]; res = lo que se apunta en el papel.
+function elige(k, q, ok, malas, ex, res, esq = 1) { return {k, lhs:k, elige:true, q, ok, malas:malas.map(m => m[0]), por:Object.fromEntries(malas), ex, res, esq, pide:true}; }
+function tok(v, n) { return {v, n}; }
+function dd(sym, val, t) { return {sym, val, tok: t, k: sym}; }             // dato que se toca en el enunciado
+function dc(sym, val, q, opts) { return {sym, val, q, opts, k: sym}; }      // dato que se elige (cambio de unidad, n.º de clase...)
+
+// Solo admite el redondeo (0,15 %): así los errores típicos no cuelan como buenos.
+// tol: algunas cuentas encadenadas (S = U · I con I redondeada) admiten algo más.
+function acierta(x, val, tol = 0.0015) { return Math.abs(x - val) <= Math.max(Math.abs(val) * tol, 1e-9); }
+// Al azar se descartan los casos en que un error típico da casi lo mismo que lo bueno.
+// (Si el error da exactamente lo mismo, como Q2 = 0 con cos φ2 = 1, no se puede notar: no cuenta.)
+const choca = j => j.calc.some(c => !c.elige && c.trap.some(([v]) => Math.abs(v - c.val) > 1e-9 && acierta(v, c.val, c.tol)));
+function hacer(sub, p) { let j, n = 0; do j = TIPO.subs[sub](p || {}); while (!p && choca(j) && ++n < 60); j.sub = sub; j.origen = 'inv'; j.tipo = TIPO.id; return j; }
+// Problema de clase o control de César, tal cual: mismo generador con sus datos y su enunciado.
+function deClase(id, de, sub, p, txt, preg, ajusta) {
+  const j = hacer(sub, p); j.origen = 'clase'; j.de = de; j.id = id; j.txt = txt; j.preg = preg; if (ajusta) ajusta(j); return j;
+}
+
+// Fórmulas: dos son la misma si dan lo mismo con cualquier valor (vale cualquier orden correcto de las fichas).
+const GR = Math.PI / 180;
+const FUN = {arccos:x => Math.acos(x) / GR, arctg:x => Math.atan(x) / GR, tg:x => Math.tan(x * GR), sen:x => Math.sin(x * GR), '√':Math.sqrt};
+function evalua(fichas, vals) {
+  let i = 0; const t = fichas;
+  const atom = () => { const k = t[i++];
+    if (k === undefined) throw 0;
+    if (k === '(') { const v = suma(); if (t[i++] !== ')') throw 0; return v; }
+    if (FUN[k]) return FUN[k](atom());
+    if (k === 'π') return Math.PI;
+    if (k === ')' || ['+','−','·','/'].includes(k)) throw 0;
+    if (/^[\d.,]+$/.test(k)) return parseFloat(k.replace(/\./g,'').replace(',','.'));
+    if (vals[k] === undefined) { let h = 7; for (const c of k) h = (h * 31 + c.charCodeAt(0)) % 9973; vals[k] = 0.05 + ((h * vals.$) % 997) / 1100; }
+    return vals[k]; };
+  const prod = () => { let v = atom(); while (['·','/'].includes(t[i])) { const o = t[i++], w = atom(); v = o === '/' ? v / w : v * w; } return v; };
+  const suma = () => { let v = prod(); while (t[i] === '+' || t[i] === '−') { const o = t[i++], w = prod(); v = o === '+' ? v + w : v - w; } return v; };
+  const r = suma(); if (i !== t.length) throw 0; return r;
+}
+function mismaFormula(a, b) {
+  try { return [3, 11, 29].every(k => { const m = {$:k}, x = evalua(a, m), y = evalua(b, m); return isFinite(x) && Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x)); }); } catch (e) { return false; }
+}
+function leeNum(s) {
+  s = String(s).trim().replace(/\s/g, '').replace(/−/g, '-');
+  if (!s) return NaN;
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if (/^-?[1-9]\d{0,2}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+  return s.match(/^-?\d*\.?\d+$/) ? parseFloat(s) : NaN;
+}
+
+// Letras como en el papel: RL → R con L pequeña; algunas con nombre propio.
+const NOMS_BASE = {Rtotal:'R total', Itotal:'I total', Vfinal:'V final', Vmin:'V mínima', Padd:'P añadida', Rmax:'R<sub>máx</sub>', Rcom:'S comercial',
+  cosφ:'cos φ', cosφ1:'cos φ<sub>1</sub>', cosφ2:'cos φ<sub>2</sub>', 'U²':'U²', Vmed:'V medida', pct:'%', Rbs:'R<sub>botas + suelo</sub>', llega:'% que llega', caida:'caída %'};
+const SUB_BASE = ['Rcuerpo','Rcalzado','Rsuelo','Rbotas','Rpar','Vpar','RL','Ra','Rt','Rh','Id','Vd','Va','Vc','Ih','It','RA','RB','IA','IB','UL','Uc','XL','XC','φ1','φ2','Q1','Q2','Qc','S1','S2','P1','P2','R1','R2','R3','R4','R5','R6','R7'];
+let _RX = null;
+function fs(t) {
+  if (!_RX) { const ks = [...Object.keys(NOMS_BASE), ...SUB_BASE].sort((a, b) => b.length - a.length).map(k => k.replace(/[²]/g, '\\$&'));
+    _RX = new RegExp(`(?<![A-Za-zÁÉÍÓÚáéíóúñ{φ])(${ks.join('|')})(?![A-Za-zÁÉÍÓÚáéíóúñ0-9²])`, 'g'); }
+  return String(t).replace(/\( /g, '(').replace(/ \)/g, ')').replace(_RX, m => NOMS_BASE[m] ?? `${m[0]}<sub>${m.slice(1)}</sub>`);
+}
+const ud = c => c.unit === SIN ? '' : c.unit;
+
+// Piezas de dibujo comunes. Cada tipo dibuja su esquema n (1, 2 o 3) con ellas.
+// V = valores ya conocidos (clave → texto); hl = la pieza que toca ahora (se pinta en amarillo).
+const C_TXT = '#16202b', C_GRI = '#7a8794', C_HL = '#d9730d', C_W = '#16202b', C_I = '#1d3f7a';
+// Las letras del dibujo, como en el papel (mismas reglas que fs).
+const svgT = s => fs(s).replace(/<sub>(.*?)<\/sub>/g, '<tspan baseline-shift="sub" font-size="72%">$1</tspan>');
+const lab = k => svgT(k);
+const largo = k => fs(k).replace(/<[^>]+>/g, '').length;
+const _svg = (w, h, inner, t) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${t}" font-family="Atkinson Hyperlegible, Verdana, sans-serif">${inner}</svg>`;
+const _cap = (x, y, t, a = 'middle') => t ? `<text x="${x}" y="${y}" text-anchor="${a}" font-size="14" fill="${C_GRI}">${t}</text>` : '';
+// resistencia horizontal (etiqueta encima, valor debajo)
+function rH(x, y, k, V, hl, cap) {
+  const on = hl === k, v = V[k];
+  return `<rect x="${x - 30}" y="${y - 11}" width="60" height="22" rx="3" fill="${on ? '#ffe27a' : '#fff'}" stroke="${on ? C_HL : C_W}" stroke-width="${on ? 3.5 : 2}"/>
+   <text x="${x}" y="${y - 17}" text-anchor="middle" font-size="19" font-weight="700" fill="${C_TXT}">${lab(k)}</text>
+   <text x="${x}" y="${y + 29}" text-anchor="middle" font-size="17" font-weight="${v ? 700 : 400}" fill="${v ? C_TXT : C_GRI}">${v || '?'}</text>${_cap(x, y + 44, cap)}`;
+}
+// resistencia vertical (etiqueta y valor a la derecha)
+function rV(x, y, k, V, hl, cap, h = 50) {
+  const on = hl === k, v = V[k];
+  return `<rect x="${x - 11}" y="${y - h / 2}" width="22" height="${h}" rx="3" fill="${on ? '#ffe27a' : '#fff'}" stroke="${on ? C_HL : C_W}" stroke-width="${on ? 3.5 : 2}"/>
+   <text x="${x + 18}" y="${y - 6}" font-size="19" font-weight="700" fill="${C_TXT}">${lab(k)}</text>
+   <text x="${x + 18}" y="${y + 17}" font-size="17" font-weight="${v ? 700 : 400}" fill="${v ? C_TXT : C_GRI}">${v || '?'}</text>${_cap(x + 18, y - 27, cap, 'start')}`;
+}
+// resultado que no es una pieza (Id, Vc, R total...): «Id = ?» o con su valor
+function tag(x, y, k, V, hl, a = 'middle') {
+  const on = hl === k, v = V[k], t = `${lab(k)} = ${v || '?'}`, n = largo(k) + 3 + (v ? v.length : 1), w = n * 9.4 + 10;
+  const x0 = a === 'middle' ? x - w / 2 : a === 'end' ? x - w : x - 5;
+  return `${on ? `<rect x="${x0}" y="${y - 19}" width="${w}" height="26" rx="5" fill="#ffe27a" stroke="${C_HL}" stroke-width="2.5"/>` : ''}<text x="${x}" y="${y}" text-anchor="${a}" font-size="17" font-weight="700" fill="${v || on ? C_I : C_GRI}">${t}</text>`;
+}
+function fuente(x, y, V, hl) {
+  const k = TIPO.volt || 'V', on = hl === k;                         // unos tipos llaman V a la tensión y otros U (como en clase)
+  return `<circle cx="${x}" cy="${y}" r="20" fill="${on ? '#ffe27a' : '#fff'}" stroke="${on ? C_HL : C_W}" stroke-width="${on ? 3.5 : 2}"/><path d="M${x - 10} ${y} q5 -9 10 0 t10 0" fill="none" stroke="${C_W}" stroke-width="2"/>
+   <text x="${x}" y="${y + 42}" text-anchor="middle" font-size="17" font-weight="700" fill="${V[k] ? C_TXT : C_GRI}">${k} = ${V[k] || '?'}</text>`;
+}
+const flecha = (x, y, dir) => { const d = {u:`M${x - 6} ${y + 5} L${x} ${y - 6} L${x + 6} ${y + 5}Z`, d:`M${x - 6} ${y - 5} L${x} ${y + 6} L${x + 6} ${y - 5}Z`, r:`M${x - 5} ${y - 6} L${x + 6} ${y} L${x - 5} ${y + 6}Z`, l:`M${x + 5} ${y - 6} L${x - 6} ${y} L${x + 5} ${y + 6}Z`}[dir]; return `<path d="${d}" fill="${C_I}"/>`; };
+const motor = (x, y) => `<rect x="${x - 30}" y="${y - 44}" width="60" height="28" rx="6" fill="#d9a066" stroke="#7a4a1c" stroke-width="2"/><text x="${x}" y="${y - 25}" text-anchor="middle" font-size="12" font-weight="700" fill="#3b2310">MOTOR</text><line x1="${x}" y1="${y - 16}" x2="${x}" y2="${y}" stroke="#7a4a1c" stroke-width="2"/><circle cx="${x}" cy="${y}" r="5" fill="${C_W}"/>`;
+const hilo = d => `<path d="${d}" fill="none" stroke="${C_W}" stroke-width="2.5" stroke-linejoin="round"/>`;
+const persona = (x, y) => `<g stroke="${C_TXT}" stroke-width="2.2" fill="none" stroke-linecap="round"><circle cx="${x}" cy="${y}" r="6"/><path d="M${x} ${y + 6} v16 M${x} ${y + 22} l-7 12 M${x} ${y + 22} l7 12 M${x} ${y + 11} l-11 -6 M${x} ${y + 11} l9 6"/></g>`;
+
+
+// Tipo «Conductor eléctrico» (juego 10): el DNI del cable, la intensidad máxima de la tabla, la teoría del cuaderno y los factores de la sección.
+// Fuentes: cuaderno de M (fotos del 2-11-2026), ejercicios 16-24 de «Examen conductor eléctrico» (gen.py) y controles 31-34 de César.
+// Tabla A.52-1 bis de la UNE 20460-5-523 (40 °C, aire, cobre): grapada en la pared = método C; columnas 6 (3 PVC), 8 (2 PVC), 9 (3 XLPE), 11 (2 XLPE).
+const AMP = {1.5:[11, 11.5, 13, 13.5, 15, 16, 16.5, 19, 20, 21, 24], 2.5:[15, 16, 17.5, 18.5, 21, 22, 23, 26, 26.5, 29, 33], 4:[20, 21, 23, 24, 27, 30, 31, 34, 36, 38, 45],
+  6:[25, 27, 30, 32, 36, 37, 40, 44, 46, 49, 57], 10:[34, 37, 40, 44, 50, 52, 54, 60, 65, 68, 76], 16:[45, 49, 54, 59, 66, 70, 73, 81, 87, 91, 105]};
+const COL_C = {'PVC 3':6, 'PVC 2':8, 'XLPE 3':9, 'XLPE 2':11};
+const amp = (s, col) => AMP[s][col - 2];
+
+// ---------- el DNI del cable ----------
+const SIG = {H:'Armonizado (norma europea)', ES:'Cable nacional', '05':'Tensión 300/500 V', '07':'Tensión 450/750 V', 'V·a':'Aislamiento de PVC', 'Z1·a':'Aislamiento de poliolefina (libre de halógenos)',
+  'V·c':'Cubierta de PVC', 'Z1·c':'Cubierta de poliolefina', '-K':'Flexible para instalaciones fijas (clase 5)', '-F':'Flexible para servicios móviles (clase 5)', '(AS)':'Alta seguridad frente al fuego: libre de halógenos y poco humo'};
+const PARTE = {norma:['H', 'ES'], tension:['05', '07'], aisl:['V·a', 'Z1·a'], cub:['V·c', 'Z1·c'], flex:['-K', '-F']};
+const NOM_P = {norma:'la norma', tension:'la tensión', aisl:'el aislamiento', cub:'la cubierta', flex:'la flexibilidad', as:'(AS)', comp:'los conductores'};
+const PLANTILLAS = [
+  {norma:'H', tension:'07', aisl:'V·a', flex:'-K', uni:true},                        // H07V-K 1×s
+  {norma:'ES', tension:'07', aisl:'Z1·a', flex:'-K', as:true, uni:true},             // ES07Z1-K (AS) 1×s
+  {norma:'H', tension:'05', aisl:'V·a', cub:'V·c', flex:'-F'},                       // H05VV-F nGs
+  {norma:'H', tension:'07', aisl:'V·a', cub:'Z1·c', flex:'-K'},                      // H07VZ1-K nGs
+];
+const letra = x => x.split('·')[0];
+function dni(p) {
+  const t = p.t ?? pick(PLANTILLAS), s = p.s ?? pick([1.5, 2.5, 4, 6, 10]), n = p.n ?? pick([3, 4, 5]);
+  const comp = t.uni ? `1×${es(s)}` : `${n}G${es(s)}`;
+  const codigo = `${t.norma}${t.tension}${letra(t.aisl)}${t.cub ? letra(t.cub) : ''}${t.flex}${t.as ? ' (AS)' : ''} ${comp} mm²`;
+  const calcs = [];
+  const pregunta = (k, cod, parte) => {
+    const otros = Object.keys(SIG).filter(x => x !== cod && !(parte === 'aisl' && (x === 'V·c' || x === 'Z1·c')) && !(parte === 'cub' && (x === 'V·a' || x === 'Z1·a')));   // la misma letra en la otra posición confundiría
+    const malas = (PARTE[parte] || []).filter(x => x !== cod).concat(shuffle(otros.filter(x => !(PARTE[parte] || []).includes(x)))).slice(0, 2);
+    calcs.push(elige(k, `¿Qué significa «${letra(cod)}» (${NOM_P[parte]})?`, SIG[cod], malas.map(m => [SIG[m], `Eso es «${letra(m)}».`]),
+      `«${letra(cod)}» = <b>${SIG[cod]}</b>.`, `${letra(cod)}: ${SIG[cod]}`));
+  };
+  pregunta('norma', t.norma, 'norma'); pregunta('tension', t.tension, 'tension'); pregunta('aisl', t.aisl, 'aisl');
+  if (t.cub) pregunta('cub', t.cub, 'cub');
+  pregunta('flex', t.flex, 'flex');
+  if (t.as) calcs.push(elige('as', '¿Qué significa «(AS)»?', SIG['(AS)'], [['Alta seguridad eléctrica: aguanta más tensión', 'No es de tensión: (AS) es libre de halógenos y baja emisión de humos.'], ['Armonizado y de servicio móvil', 'Armonizado es la H. (AS) es libre de halógenos y baja emisión de humos.']],
+    '<b>(AS)</b> = alta seguridad frente al fuego: libre de halógenos, poco humo y no propaga el incendio.', '(AS): libre de halógenos, poco humo'));
+  const ok = t.uni ? `Un conductor de ${es(s)} mm²` : `${n} conductores de ${es(s)} mm², uno de protección (tierra)`;
+  const malasC = t.uni ? [[`Un cable de ${es(s)} metros`, 'Los números del final son la sección, en mm².'], [`${es(s)} conductores de 1 mm²`, 'Al revés: «1×» es un conductor; después va la sección.']]
+    : [[`${es(s)} conductores de ${n} mm²`, 'Al revés: primero el número de conductores y después la sección.'], [`${n} conductores de ${es(s)} mm², ninguno de tierra`, 'La G dice que uno es de protección (verde-amarillo). Con «x» no habría tierra.']];
+  calcs.push(elige('comp', `¿Qué significa «${comp}»?`, ok, malasC, `«${comp}» = <b>${ok}</b>.`, `${comp}: ${ok.toLowerCase()}`));
+  const frase = `${SIG[t.norma]}, de ${SIG[t.tension].replace('Tensión ', '')}, ${SIG[t.aisl].toLowerCase()}${t.cub ? ' y ' + SIG[t.cub].toLowerCase() : ''}, ${SIG[t.flex].toLowerCase()}${t.as ? ', libre de halógenos' : ''}, con ${ok.toLowerCase()}.`;
+  return {txt:'Explica qué significa cada parte de este cable: {cod}', preg:'Di qué significa cada parte y escríbelo en una frase.', toks:{cod:tok(codigo, 'el código del cable')}, datos:[],
+    calc:calcs, esc:{k:'dni', t, comp}, frase};
+}
+
+// ---------- intensidad máxima (tabla) ----------
+function intensidad(p) {
+  const tri = p.tri ?? Math.random() < .6, ais = p.ais ?? (Math.random() < .7 ? 'PVC' : 'XLPE'), s = p.s ?? pick([1.5, 2.5, 4, 6, 10, 16]);
+  const n = tri ? 3 : 2, col = COL_C[`${ais} ${n}`], I = amp(s, col), cod = ais === 'PVC' ? (tri ? `H07VZ1-K 4G${es(s)}` : `H07VZ1-K 3G${es(s)}`) : (tri ? `RZ1-K 4G${es(s)}` : `RZ1-K 3G${es(s)}`);
+  const cols = Object.values(COL_C).filter(c => c !== col);
+  const vecinos = [amp(s, col === 2 ? 3 : col - 1), amp(s, col + 1 > 12 ? col - 2 : col + 1)].filter(v => v !== I);
+  const sec = Object.keys(AMP).map(Number), si = sec.indexOf(s), otraS = sec[si + 1] ?? sec[si - 1];
+  const malasI = [...new Set([...vecinos, amp(otraS, col), amp(s, col + 2 > 12 ? col - 3 : col + 2)])].filter(v => v !== I).slice(0, 2);
+  return {txt:`Obtén la intensidad máxima admisible de una manguera ${cod} mm², con aislamiento ${ais}, grapada en la pared, para alimentar un receptor ${tri ? 'trifásico' : 'monofásico'}.`,
+    preg:'¿Cuántos conductores van cargados? Busca el método, la columna y la sección en la tabla. Escribe los amperios.', toks:{}, datos:[],
+    calc:[elige('cargados', `Receptor ${tri ? 'trifásico' : 'monofásico'}. ¿Cuántos conductores van cargados?`, `${n} cargados`,
+        tri ? [['4 cargados', 'El de tierra (verde-amarillo) no lleva corriente: no cuenta.'], ['2 cargados', 'Trifásica: las 3 fases van cargadas.']]
+            : [['3 cargados', 'El de tierra (verde-amarillo) no lleva corriente: no cuenta.'], ['1 cargado', 'El neutro también lleva corriente: fase + neutro = 2.']],
+        `${tri ? 'Trifásica: 3 fases' : 'Monofásica: fase y neutro'} → <b>${n} cargados</b>. La tierra no cuenta.`, `${n} cargados (${ais})`),
+      elige('metodo', 'Grapada en la pared. ¿Qué método de instalación es?', 'Método C', [['Método B1/B2', 'B1 y B2 son en tubo sobre la pared. Grapada directamente es C.'], ['Método E', 'E es al aire en bandeja. Grapada en la pared es C.']],
+        'Grapada en la pared (sobre la superficie) = <b>método C</b>.', 'Método C'),
+      elige('columna', `Fila C, ${n} cargados con ${ais}. ¿Qué columna?`, `Columna ${col}`, shuffle(cols).slice(0, 2).map(c => [`Columna ${c}`, `La columna ${c} es ${Object.keys(COL_C).find(k => COL_C[k] === c).replace(' ', '')}. Busca «${ais}${n}».`]),
+        `En la fila C, la casilla de <b>${ais}${n}</b> está en la <b>columna ${col}</b>.`, `Columna ${col}`),
+      elige('I', `Columna ${col} y ${es(s)} mm². ¿Cuántos amperios aguanta?`, `${es(I)} A`, malasI.map(v => [`${es(v)} A`, `Mira bien la fila de ${es(s)} mm² y la columna ${col}.`]),
+        `Bajando por la columna ${col} hasta ${es(s)} mm²: <b>I máx = ${es(I)} A</b>.`, `I máx = ${es(I)} A`)],
+    esc:{k:'tabla', col, s}, frase:`${tri ? 'Trifásica' : 'Monofásica'}, ${n} cargados con ${ais}, método C, columna ${col}: aguanta ${es(I)} amperios.`};
+}
+
+// ---------- teoría del cuaderno ----------
+const FACTORES = ['Modo de alimentación (monofásica o trifásica)', 'Naturaleza del conductor (cobre o aluminio)', 'Tipo de aislamiento (PVC, XLPE, EPR…)', 'Caída de tensión', 'Potencia demandada', 'Modo de instalación (aire o enterrada)', 'Temperatura'];
+const NO_FACTOR = [['El color de la cubierta', 'El color sirve para identificar, no cambia la sección.'], ['La marca del fabricante', 'La marca no cambia la sección.'], ['El precio del cable', 'El precio no es uno de los 7 factores.']];
+const TARJETAS = [
+  () => elige('t1', '¿Cuáles son <b>termoplásticos</b>?', 'PVC y Z1', [['XLPE y EPR', 'Esos son termoestables.'], ['PVC y XLPE', 'XLPE es termoestable.']], 'Termoplásticos: <b>PVC y Z1</b>. Termoestables: XLPE y EPR.', 'Termoplásticos: PVC y Z1'),
+  () => elige('t2', '¿Cuáles son <b>termoestables</b>?', 'XLPE y EPR', [['PVC y Z1', 'Esos son termoplásticos.'], ['Z1 y EPR', 'Z1 es termoplástico.']], 'Termoestables: <b>XLPE y EPR</b>.', 'Termoestables: XLPE y EPR'),
+  () => elige('t3', '¿Qué significa <b>PVC</b>?', 'Policloruro de vinilo', [['Poliolefina', 'Esa es Z1.'], ['Polietileno reticulado', 'Ese es el XLPE.']], 'PVC = <b>policloruro de vinilo</b>.', 'PVC: policloruro de vinilo'),
+  () => elige('t4', '¿Qué es <b>Z1</b>?', 'Poliolefina, libre de halógenos (obligatoria)', [['Policloruro de vinilo', 'Ese es el PVC.'], ['Un cable de 1 conductor', 'Z1 es un material: poliolefina.']], 'Z1 = <b>poliolefina</b>, libre de halógenos, obligatoria.', 'Z1: poliolefina (obligatoria)'),
+  () => elige('t5', 'Por el <b>número de hilos</b> (conductores), ¿qué dos tipos de cable hay?', 'Unipolares y multipolares', [['Rígidos y flexibles', 'Eso es por la forma constructiva.'], ['De cobre y de aluminio', 'Eso es el material del conductor.']], 'Por el nº de hilos: <b>unipolares y multipolares</b>.', 'Unipolares y multipolares'),
+  () => elige('t6', '¿Qué otro nombre tienen los cables <b>multipolares</b>?', 'Mangueras', [['Unifilares', 'Unifilar es de un solo hilo.'], ['Bornes', 'Los bornes son donde se conecta el cable.']], 'Los multipolares también se llaman <b>mangueras</b>.', 'Multipolares = mangueras'),
+  () => elige('t7', 'Por su <b>forma constructiva</b>, ¿qué dos tipos hay?', 'Rígidos y flexibles', [['Unipolares y multipolares', 'Eso es por el número de hilos.'], ['Termoplásticos y termoestables', 'Eso es el aislante.']], 'Por la forma constructiva: <b>rígidos y flexibles</b>.', 'Rígidos y flexibles'),
+  () => { const f = pick(FACTORES); return elige('t8', '¿Cuál de estos es uno de los <b>7 factores</b> para calcular la sección?', f, shuffle(NO_FACTOR).slice(0, 2), `<b>${f}</b> es uno de los 7 factores.`, `Factor: ${f}`); },
+];
+function teoria(p) {
+  const ts = p.ts ?? shuffle(TARJETAS.map((_, i) => i)).slice(0, 4);
+  return {txt:'Repaso de la teoría del cuaderno: aislantes, tipos de cable y factores de la sección.', preg:'Contesta cada pregunta.', toks:{}, datos:[],
+    calc:ts.map((i, k) => Object.assign(TARJETAS[i](), {k:'t' + k})), esc:{k:'cable'}, frase:'Termoplásticos: PVC y Z1. Termoestables: XLPE y EPR. Por hilos: unipolares y multipolares (mangueras). Por la forma: rígidos y flexibles.'};
+}
+const INFLUYE = ['Cambia la fórmula (2 · P · L en mono, P · L en tri) y la intensidad', 'Cambia K: el aluminio conduce peor y pide más sección', 'Cambia la temperatura que aguanta (PVC/Z1 70 °C, XLPE/EPR 90 °C), K y la columna de la tabla',
+  'Cuanto menos caída se admite, más sección', 'Más potencia, más intensidad y más sección', 'Al aire o enterrada se enfría distinto: cambia la tabla', 'Con más calor el cable aguanta menos amperios'];
+function sieteFactores() {
+  const calcs = FACTORES.map((f, i) => elige('f' + i, `Factor ${i + 1} de 7: ¿cuál de estos es un factor de la sección?`, f, shuffle(NO_FACTOR).slice(0, 2), `<b>${f}</b>.`, f));
+  FACTORES.forEach((f, i) => { const otros = shuffle(INFLUYE.filter((_, k) => k !== i)).slice(0, 2);
+    calcs.push(elige('g' + i, `b) ¿Cómo influye: <b>${f}</b>?`, INFLUYE[i], otros.map(o => [o, `Eso es de otro factor: ${FACTORES[INFLUYE.indexOf(o)].split(' (')[0].toLowerCase()}.`]), `${f.split(' (')[0]}: <b>${INFLUYE[i].toLowerCase()}</b>.`, `${f.split(' (')[0]}: ${INFLUYE[i].toLowerCase()}`)); });
+  return {txt:'Para calcular la sección de los conductores hay que tener en cuenta características de la alimentación, el cable, la carga y el lugar de instalación.', preg:'a) Enumera los siete factores de los apuntes del profesor. b) Explica cómo influye cada uno.', toks:{}, datos:[],
+    calc:calcs, esc:{k:'cable'}, frase:FACTORES.join('. ') + '.'};
+}
+
+// ---------- control 34: dos cables para la misma carga ----------
+function dosCables() {
+  return {txt:'Dos cables alimentan la misma carga con la misma tensión. El primero va al aire en bandeja y tiene {L1} de recorrido. El segundo va enterrado y tiene {L2}. Las condiciones térmicas también son distintas.',
+    preg:'a) ¿Qué factores cambian? b) ¿Por qué la potencia sola no permite elegir la sección? c) ¿Qué verificaciones hay que hacer?', toks:{L1:tok('10 m', 'la longitud del primero'), L2:tok('60 m', 'la longitud del segundo')}, datos:[],
+    calc:[elige('a', 'a) ¿Qué factores cambian entre los dos cables?', 'Modo de instalación, longitud (caída de tensión) y temperatura', [['La potencia y la tensión', 'Las dos son iguales: misma carga y misma tensión.'], ['Solo el material del conductor', 'El enunciado no habla del material. Cambian instalación, longitud y temperatura.']],
+        'Cambian el <b>modo de instalación</b> (aire o enterrado), la <b>longitud</b> (10 o 60 m: caída de tensión) y la <b>temperatura</b>.', 'Cambian: instalación, longitud y temperatura'),
+      elige('b', 'b) ¿Por qué la potencia sola no permite elegir la sección?', 'Con la misma potencia, el calentamiento y la caída de tensión pueden pedir secciones distintas', [['Porque la potencia se mide en kW y la sección en mm²', 'Las unidades no son el motivo. Depende del calentamiento y de la caída.'], ['Sí se puede: a más potencia, más sección y ya está', 'No basta: el de 60 m enterrado puede necesitar más sección que el de 10 m al aire.']],
+        'La misma potencia puede pedir secciones distintas: el <b>calentamiento</b> cambia con la instalación y la temperatura, y la <b>caída de tensión</b> con la longitud.', 'Potencia sola no: calentamiento + caída de tensión'),
+      elige('c', 'c) ¿Qué verificaciones hay que hacer antes de elegir el cable?', 'Por calentamiento (intensidad de la tabla) y por caída de tensión', [['Solo mirar el color del cable', 'El color no decide la sección.'], ['Solo calcular la potencia', 'Hay que comprobar el calentamiento y la caída de tensión.']],
+        'Dos comprobaciones: por <b>calentamiento</b> (la intensidad máxima de la tabla, con su corrección) y por <b>caída de tensión</b> (sin pasar del %). Se queda la sección mayor.', 'Verificar: calentamiento y caída de tensión')],
+    esc:{k:'cable'}, frase:'La potencia sola no basta: hay que comprobar el calentamiento y la caída de tensión.'};
+}
+
+// ---------- los factores en un enunciado (controles 32-34) ----------
+function factoresEnunciado(p) {
+  const tri = p.tri ?? Math.random() < .5, metal = p.metal ?? pick(['cobre', 'aluminio']), ais = p.ais ?? pick(['PVC', 'XLPE']);
+  const L = p.L ?? rnd(10, 80, 5), P = p.P ?? (tri ? rnd(5, 20, 1) : rnd(1.5, 5, 0.5)), aire = p.aire ?? Math.random() < .5, T = p.T ?? rnd(20, 40, 5);
+  const toks = {ali:tok(tri ? 'trifásica' : 'monofásica', 'el modo de alimentación'), met:tok(metal, 'la naturaleza del conductor'), ais:tok(ais, 'el tipo de aislamiento'),
+    L:tok(L + ' m', 'el recorrido (longitud)'), P:tok(es(P) + ' kW', 'la potencia demandada'), ins:tok(aire ? 'al aire' : 'enterrada', 'el modo de instalación'), T:tok(T + ' °C', 'la temperatura')};
+  const datos = [dd('Alimentación', toks.ali.v, 'ali'), dd('Conductor', metal, 'met'), dd('Aislamiento', ais, 'ais'), dd('Recorrido', L + ' m', 'L'), dd('Potencia', es(P) + ' kW', 'P'), dd('Instalación', toks.ins.v, 'ins'), dd('Temperatura', T + ' °C', 'T')];
+  return {txt:'Alimentación {ali}. Conductores de {met} con aislamiento {ais}. Recorrido de {L}. Potencia demandada: {P}. Instalación {ins}. Temperatura ambiente: {T}.',
+    preg:'Ordena los datos por factores. ¿Qué falta para elegir la sección?', toks, datos,
+    calc:[...((p.calent ?? Math.random() < .5) ? [
+      elige('Calor', '¿Qué factores influyen en el <b>calentamiento</b> del cable?', 'Intensidad (potencia), material, aislamiento, instalación y temperatura',
+        [['Solo la longitud del cable', 'La longitud influye en la caída de tensión, no en el calentamiento.'], ['La marca y el color', 'No influyen en nada de la sección.']],
+        'Calentamiento: <b>intensidad (potencia), material, aislamiento, modo de instalación y temperatura</b>.', 'Calentamiento: intensidad, material, aislamiento, instalación, temperatura'),
+      elige('Caída', '¿Y en la <b>caída de tensión</b>?', 'Longitud, potencia, material (K), tensión y si es mono o tri',
+        [['Solo la temperatura ambiente', 'La temperatura es del calentamiento. La caída depende sobre todo de la longitud.'], ['El tipo de instalación solamente', 'Al aire o enterrada cambia el calentamiento. La caída va con la longitud, la potencia y K.']],
+        'Caída de tensión: <b>longitud, potencia, material (K), tensión y mono o tri</b>.', 'Caída: longitud, potencia, K, tensión, mono/tri')] : []),
+      elige('Falta', 'Ya tienes 6 de los 7 factores. ¿Qué falta para elegir la sección?', 'La caída de tensión admitida (y mirar la intensidad en la tabla)',
+      [['El color del cable', 'El color no cambia la sección.'], ['Nada: con la potencia ya se elige', 'La potencia sola no basta: hay que mirar el calentamiento (tabla de intensidades) y la caída de tensión.']],
+      `Falta la <b>caída de tensión</b> admitida (3 % o 5 %), que va con la longitud, y la tensión. Y hay que comprobar el <b>calentamiento</b>: la intensidad máxima de la tabla${aire ? '' : ' de cables enterrados'}, corregida porque la temperatura no es la de la tabla.`, 'Falta: caída de tensión + comprobar la tabla de intensidades')],
+    esc:{k:'cable'}, frase:'Siete factores: alimentación, conductor, aislamiento, caída de tensión, potencia, instalación y temperatura.'};
+}
+
+const TIPO = {
+ id:'cab', num:10, n:'Conductor eléctrico', icono:'🧵', lead:'El DNI del cable, cuántos amperios aguanta según la tabla, la teoría del cuaderno y los 7 factores para elegir la sección.',
+ esqs:['El cable'], avisos:{}, orden:['n1', 'n2', 'n3', 'n4'], subs:{n1:dni, n2:intensidad, n3:teoria, n4:factoresEnunciado},
+ nomsub:{n1:'El DNI del cable', n2:'Intensidad máxima (tabla)', n3:'Teoría del cuaderno', n4:'Factores en un enunciado'},
+ metodo:['DNI: H armonizado · 07 450/750 V · V PVC · Z1 poliolefina · -K flexible fija · -F flexible móvil', '4G6: 4 conductores de 6 mm², uno de tierra', 'Tabla: cargados (tri 3, mono 2) → método (grapada = C) → columna → sección', 'Termoplásticos PVC y Z1; termoestables XLPE y EPR', '7 factores: alimentación, conductor, aislamiento, caída de tensión, potencia, instalación, temperatura'],
+ clase:[
+  () => deClase('Ejercicio 16', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n1', {t:PLANTILLAS[2], s:1.5, n:3}, 'Explica qué significa cada parte de este cable: {cod}', 'Di qué significa cada parte y escríbelo en una frase.'),
+  () => deClase('Ejercicio 17', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n1', {t:PLANTILLAS[1], s:4}, 'Explica qué significa cada parte de este cable: {cod}', 'Di qué significa cada parte y escríbelo en una frase.'),
+  () => deClase('Ejercicio 18', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n1', {t:PLANTILLAS[3], s:6, n:5}, 'Explica qué significa cada parte de este cable: {cod}', 'Di qué significa cada parte y escríbelo en una frase.'),
+  () => deClase('Ejercicio 19', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n2', {tri:true, ais:'PVC', s:6}, 'Obtén la intensidad máxima admisible de una manguera H07VZ1-K 4G6 mm², grapada en la pared, para alimentar un motor trifásico.', '¿Cuántos van cargados? Método, columna y sección en la tabla. Amperios.'),
+  () => deClase('Ejercicio 20', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n2', {tri:true, ais:'PVC', s:2.5}, 'Obtén la intensidad máxima admisible de una manguera H07VZ1-K 4G2,5 mm², grapada en la pared, para alimentar un motor trifásico.', '¿Cuántos van cargados? Método, columna y sección en la tabla. Amperios.'),
+  () => deClase('Ejercicio 21', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n2', {tri:true, ais:'PVC', s:10}, 'Obtén la intensidad máxima admisible de una manguera H07VZ1-K 4G10 mm², grapada en la pared, para alimentar un motor trifásico.', '¿Cuántos van cargados? Método, columna y sección en la tabla. Amperios.'),
+  () => deClase('Ejercicios 22-23', 'práctica del cuaderno (hecha por Claude con los ejemplos de clase)', 'n3', {ts:[0, 1, 2, 3, 4, 5, 6]}, 'Aislantes: PVC, Z1, XLPE, EPR. Tipos de cable por el número de hilos y por su forma constructiva.', 'Clasifica los aislantes, di qué son PVC y Z1, y los tipos de cable.'),
+  () => { const j = sieteFactores(); j.sub = 'n3'; j.origen = 'clase'; j.de = 'cesar'; j.id = 'Control 31 (y ejercicio 24)'; j.tipo = 'cab'; return j; },
+  () => deClase('Control 32', 'cesar', 'n4', {tri:false, metal:'cobre', ais:'PVC', L:18, P:2.5, aire:true, T:30, calent:false}, 'Una máquina con alimentación {ali} se alimenta con conductores de {met} y aislamiento {ais}. El recorrido es de {L}, la potencia demandada de {P}, la instalación va {ins} y la temperatura ambiente es de {T}.', 'a) Identifica los factores conocidos. b) Ordena los datos por categorías. c) ¿Qué comprobaciones y datos faltan para elegir la sección?'),
+  () => deClase('Control 33', 'cesar', 'n4', {tri:true, metal:'aluminio', ais:'XLPE', L:45, P:12, aire:false, T:25, calent:true}, 'Un almacén tiene alimentación {ali} para una carga de {P}. Conductores de {met} con aislamiento {ais}, recorrido de {L}, instalación {ins} y temperatura ambiente de {T}.', 'a) Clasifica los datos de alimentación y conductores. b) Factores del calentamiento y de la caída de tensión. c) ¿Qué falta para escoger la sección?'),
+ () => { const j = dosCables(); j.sub = 'n4'; j.origen = 'clase'; j.de = 'cesar'; j.id = 'Control 34'; j.tipo = 'cab'; return j; },
+ ],
+ claseRes:{
+  'Ejercicio 16':{norma:'Armonizado', tension:'Tensión 300/500 V', comp:'3 conductores de 1,5 mm²'}, 'Ejercicio 17':{norma:'Cable nacional', as:'Alta seguridad frente al fuego', comp:'Un conductor de 4 mm²'},
+  'Ejercicio 18':{tension:'Tensión 450/750 V', cub:'Cubierta de poliolefina', comp:'5 conductores de 6 mm²'},
+  'Ejercicio 19':{columna:'Columna 6', I:'36 A'}, 'Ejercicio 20':{I:'21 A'}, 'Ejercicio 21':{I:'50 A'},
+  'Ejercicios 22-23':{t0:'PVC y Z1', t1:'XLPE y EPR', t2:'Policloruro de vinilo', t3:'Poliolefina', t4:'Unipolares y multipolares', t5:'Mangueras', t6:'Rígidos y flexibles'},
+  'Control 31 (y ejercicio 24)':{f0:'Modo de alimentación', f3:'Caída de tensión', f6:'Temperatura', g1:'Cambia K'}, 'Control 34':{a:'Modo de instalación', b:'Con la misma potencia', c:'Por calentamiento'}, 'Control 32':{Falta:'La caída de tensión'}, 'Control 33':{Calor:'Intensidad', 'Caída':'Longitud', Falta:'La caída de tensión'},
+ },
+ escena(n, V, hl, e) {
+  if (e.k === 'dni') {
+   const ps = [['norma', e.t.norma], ['tension', e.t.tension], ['aisl', letra(e.t.aisl)], ...(e.t.cub ? [['cub', letra(e.t.cub)]] : []), ['flex', e.t.flex], ...(e.t.as ? [['as', '(AS)']] : []), ['comp', e.comp]];
+   let x = 14; const w = c => 22 + c.length * 17;
+   return _svg(620, 330, ps.map(([k, c]) => { const ww = w(c), on = hl === k, hecho = V[k]; const g = `<rect x="${x}" y="40" width="${ww}" height="56" rx="6" fill="${on ? '#ffe27a' : hecho ? '#e6f4dc' : '#fff'}" stroke="${on ? C_HL : C_W}" stroke-width="${on ? 3.5 : 2}"/>
+     <text x="${x + ww / 2}" y="78" text-anchor="middle" font-size="28" font-weight="700" fill="${C_TXT}">${c}</text>`; x += ww + 8; return g; }).join('') +
+     `<text x="14" y="130" font-size="17" fill="${C_GRI}">Lo que ya sabes:</text>` + ps.filter(([k]) => V[k]).map(([k], i) => `<text x="14" y="${156 + i * 24}" font-size="18" font-weight="700" fill="#2f7d1c">${V[k]}</text>`).join(''), 'El código del cable por partes');
+  }
+  if (e.k === 'tabla') {
+   const cols = [5, 6, 7, 8, 9, 11], secs = Object.keys(AMP).map(Number), cw = 76, x0 = 90, y0 = 46, rh = 30, hecho = k => V[k];
+   const vCol = hecho('columna') || hl === 'I', vFila = hecho('I') || hl === 'I';
+   let g = `<text x="14" y="${y0 - 14}" font-size="14" font-weight="700" fill="${C_TXT}">mm²</text>` + cols.map((c, i) => `<rect x="${x0 + i * cw}" y="${y0 - 34}" width="${cw - 4}" height="26" rx="4" fill="${vCol && c === e.col ? '#ffe27a' : '#eef2f5'}"/><text x="${x0 + i * cw + cw / 2 - 2}" y="${y0 - 16}" text-anchor="middle" font-size="14" font-weight="700">col. ${c}</text>`).join('');
+   secs.forEach((s, r) => { const y = y0 + r * rh;
+     g += `<text x="14" y="${y + 20}" font-size="15" font-weight="700" fill="${vFila && s === e.s ? C_HL : C_TXT}">${es(s)}</text>` + cols.map((c, i) => { const on = vCol && vFila && c === e.col && s === e.s;
+       return `<rect x="${x0 + i * cw}" y="${y}" width="${cw - 4}" height="${rh - 4}" rx="3" fill="${on ? '#ffe27a' : (vCol && c === e.col) || (vFila && s === e.s) ? '#fff6d6' : '#fff'}" stroke="#c9d2db"/><text x="${x0 + i * cw + cw / 2 - 2}" y="${y + 19}" text-anchor="middle" font-size="15" fill="${C_TXT}">${es(amp(s, c))}</text>`; }).join(''); });
+   return _svg(560, 240, g + `<text x="14" y="236" font-size="12" fill="${C_GRI}">Tabla A.52-1 bis (UNE 20460-5-523), cobre, 40 °C, amperios. Fila C: col. 6 = 3 PVC, 8 = 2 PVC, 9 = 3 XLPE, 11 = 2 XLPE.</text>`, 'Trozo de la tabla de intensidades');
+  }
+  // corte de un cable: conductor, aislamiento, cubierta
+  return _svg(560, 220, `<circle cx="140" cy="110" r="92" fill="#3a3f47"/><text x="140" y="26" text-anchor="middle" font-size="13" fill="${C_GRI}">cubierta</text>
+   ${[[110, 85, '#8b5a2b'], [170, 85, '#222'], [110, 140, '#7a8794'], [170, 140, '#c8e04a']].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="27" fill="${c}"/><circle cx="${x}" cy="${y}" r="14" fill="#c97b3d"/>`).join('')}
+   <path d="M170 140 m-27 0 a27 27 0 0 1 54 0" fill="none" stroke="#2f7d1c" stroke-width="6" stroke-dasharray="8 6"/>
+   <text x="270" y="70" font-size="16" font-weight="700" fill="${C_TXT}">Conductor: cobre o aluminio</text><text x="270" y="100" font-size="16" font-weight="700" fill="${C_TXT}">Aislamiento: PVC, Z1, XLPE, EPR</text>
+   <text x="270" y="130" font-size="16" font-weight="700" fill="${C_TXT}">Cubierta: protege la manguera</text><text x="270" y="160" font-size="16" font-weight="700" fill="#2f7d1c">Verde-amarillo: tierra (G)</text>`, 'Corte de una manguera de 4 conductores');
+ },
+};
+
+// Juegos de problemas de Distribución · motor. Juega un solo tipo (TIPO, de t_*.js). Mismo funcionamiento que Ruta Solar
+// (Fotovoltaica), con los esquemas 1 → 2 → 3 que cambian según el paso y preguntas de opciones.
+let RT;
+const KEY = 'dist-problemas-' + TIPO.id;
+const WEB = typeof location !== 'undefined' && /github\.io$/.test(location.hostname);   // en la web del móvil hay portada con los 9
+const fresh = () => ({v:1, jobs:0, lit:{}, st:{}, fails:{}, mute:false, ex:[], log:[]});
+let S = fresh();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const RANGOS = [[0,'Becario con casco'],[5,'Peón de cable'],[15,'Oficial de segunda'],[30,'Oficial de primera'],[50,'Instalador de élite'],[80,'Jefe de obra']];
+const rango = () => { let r = RANGOS[0], n = RANGOS[1]; RANGOS.forEach((x, i) => { if (S.jobs >= x[0]) { r = x; n = RANGOS[i + 1]; } }); return {n:r[1], pct:n ? (S.jobs - r[0]) / (n[0] - r[0]) : 1, sig:n}; };
+
+// reparto de la buena sin que caiga siempre en la misma letra
+let ULT = [];
+function colocar(n) { let p; do { p = Math.floor(Math.random() * n); } while (ULT.length >= 2 && ULT[0] === p && ULT[1] === p); ULT = [p, ULT[0]]; return p; }
+function conBuena(buena, malas) { const m = shuffle(malas).slice(0, 2); m.splice(colocar(m.length + 1), 0, buena); return m; }
+
+// sonido y voz
+let AC = null;
+function tone(f, d, type = 'sine', v = .07, w = 0) { if (S.mute) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.value = f; o.connect(g); g.connect(AC.destination); const t = AC.currentTime + w; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.start(t); o.stop(t + d); } catch (e) {} }
+const SND = {ok:() => { tone(660,.12,'triangle'); tone(990,.18,'triangle',.07,.1); }, bad:() => tone(180,.25), clic:() => tone(520,.04,'square',.025), win:() => [523,659,784,1046].forEach((f,i) => tone(f,.25,'triangle',.07,i*.12))};
+function voz(t) { try { const u = new SpeechSynthesisUtterance(String(t).replace(/<[^>]+>/g,'')); u.lang = 'es-ES'; const v = speechSynthesis.getVoices().find(v => /^es(-|_)ES/i.test(v.lang)); if (v) u.voice = v; u.rate = .92; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {} }
+function toast(h) { const t = document.createElement('div'); t.className = 'r-toast'; t.innerHTML = h; RT.appendChild(t); setTimeout(() => t.remove(), 3200); }
+
+// piezas comunes
+const avatar = () => `<span class="r-av" aria-hidden="true">${TIPO.icono}</span>`;
+const dice = (html) => `<div class="r-say">${avatar()}<div>${html}</div></div>`;
+function barra(titulo, extra = '') {
+  return `<div class="r-bar"><button type="button" class="r-back" data-a="menu">← Volver al menú</button><span class="r-tt">${titulo}</span><span class="sp"></span>${extra}<button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>`;
+}
+const pips = (n, i) => `<span class="r-pips" aria-label="Va por ${i + 1} de ${n}">${Array.from({length:n}, (_, k) => `<i class="${k < i ? 'ok' : k === i ? 'now' : ''}"></i>`).join('')}</span>`;
+// clave: mientras sea la misma pantalla (el mismo problema), se queda donde estaba; si cambia, vuelve arriba.
+let CLAVE = null;
+const pinta = (h, clave = null) => { const y = RT.scrollTop, sigue = clave != null && clave === CLAVE; CLAVE = clave;
+  RT.innerHTML = `<div class="r-in">${h}</div>`; RT.scrollTop = sigue ? y : 0; };
+const $ = s => RT.querySelector(s), $$ = s => [...RT.querySelectorAll(s)];
+function estrellas(n) { return '★'.repeat(n) + '☆'.repeat(3 - n); }
+function guarda(id, n) { if ((S.st[id] || 0) < n) S.st[id] = n; save(); }
+
+// ---------- portada ----------
+function inicio() {
+  const r = rango(), en = Object.keys(S.lit).length, nf = Object.values(S.fails).reduce((a, b) => a + b, 0);
+  const card = (tit, txt, btn) => `<div class="r-card"><div class="r-chead">${avatar()}<div><h3>${tit}</h3><p>${txt}</p></div></div>${btn}</div>`;
+  const md = (m, t, s) => `<button type="button" class="r-b" data-a="z:${m}">${t}<small>${s}</small><small class="est">${estrellas(S.st[m] || 0)}</small></button>`;
+  const ids = TIPO.clase.map(f => f().id).join(', ');
+  pinta(`<div class="r-bar">${WEB ? '<a class="r-back" href="index.html">← Todos los juegos</a>' : ''}<span class="r-jn">Juego ${TIPO.num} de 10 · Distribución</span><span class="sp"></span><button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>
+   <header class="r-hero"><div><h1>${TIPO.n}</h1><p class="r-lead">${TIPO.lead}</p>
+    <div class="r-st"><div><b>${en}/${LUGARES.length}</b><span>talleres con luz</span></div><div><b>${S.jobs}</b><span>problemas hechos</span></div><div><b>${S.ex.length}</b><span>exámenes</span></div></div>
+    <p style="margin-bottom:4px"><b>${r.n}</b>${r.sig ? ` · siguiente a ${r.sig[0]} problemas` : ''}</p><div class="r-xp"><i style="width:${Math.round(r.pct * 100)}%"></i></div></div>
+    <div class="r-mapa"><div class="r-et r-met-t">El método</div><ol class="r-met">${TIPO.metodo.map(x => `<li>${fs(x)}</li>`).join('')}</ol></div></header>
+   <h2 class="r-sec">Practica<small>de más ayuda a menos</small></h2><div class="r-grid">
+    ${card('Paso a paso', 'Cambian los números cada vez.', `<div class="r-modos">${md('1', 'Aprendiz', 'eliges la fórmula')}${md('2', 'Oficial', 'la montas tú')}${md('3', 'Jefe de obra', 'en papel, sin ayuda')}</div>`)}
+    ${card('Los de clase', `Los enunciados tal cual: ${ids}.`, `<div class="r-modos">${md('c', 'Con ayuda', 'eliges la fórmula')}${md('d', 'Sin ayuda', 'en papel')}</div>`)}
+    ${card('Repaso de fallos', nf ? `Vuelven los que más has fallado (${nf}).` : 'De momento no tienes fallos guardados.', `<button type="button" class="r-b ${nf ? 'pri' : ''}" data-a="repaso" ${nf ? '' : 'disabled'}>Repasar</button>`)}
+    ${card('Examen', '4 problemas: 2 de clase y 2 nuevos. Sin fórmula. Con nota.', `<button type="button" class="r-b pri" data-a="examen">Empezar${S.ex.length ? `<small>última nota: ${es(S.ex[S.ex.length - 1].nota, 1)}</small>` : ''}</button>`)}
+   </div>
+   <div class="r-pue">${LUGARES.map(l => `<span class="${S.lit[l] ? 'on' : ''}" title="${l}">💡 ${l}</span>`).join('')}</div>
+   <p style="margin-top:18px"><button type="button" class="r-link" data-a="panel">Panel de V</button></p>`);
+}
+
+// ---------- parte de trabajo ----------
+let J = null;
+let NSES = 0;
+function sesion(list, modo, titulo, id, opt = {}) { J = {list, i:0, modo, titulo, id, err:0, opt, n:++NSES}; empezarJob(); }
+function lugarObra() { const lib = LUGARES.filter(c => !S.lit[c]); return pick(lib.length ? lib : LUGARES); }
+function empezarJob() {
+  const j = J.list[J.i]; j.obra = j.obra || lugarObra();
+  J.d = 0; J.c = 0; J.fase = j.datos.length && J.modo !== 3 ? 'datos' : (J.modo === 3 ? 'res' : 'form');
+  J.tiles = []; J.fe = 0; J.re = 0; J.msg = ''; J.done = []; J.usados = {}; J.jerr = 0; J.unit = null; J.opts = null; J.ver = null; J.aviso = '';
+  if (J.modo === 3) { J.pide = j.calc.map((c, k) => c.pide ? k : -1).filter(k => k >= 0); J.c = J.pide[0]; J.pi = 0; if (j.calc[J.c].elige) J.fase = 'form'; }
+  else J.aviso = avisoEsq(j);
+  parte();
+}
+function orgTag(j) {
+  if (j.origen === 'clase') return `<span class="r-org toni">📄 ${j.id} · ${j.de === 'cesar' ? 'control de César, tal cual' : j.de}</span>`;
+  return '<span class="r-org inv">✏️ Inventado para practicar · cambia cada vez</span>';
+}
+function textoCaso(s, j, activo) {
+  return s.replace(/\{(\w+)\}/g, (_, k) => { const t = j.toks[k], us = J && J.usados[k];
+    return activo && !us ? `<button type="button" class="r-tok btn" data-tok="${k}">${t.v}</button>` : `<span class="r-tok ${us ? 'used' : ''}">${t.v}</span>`; });
+}
+const fTxt = c => `${c.lhs} = ${c.f.join(' ')}`;
+const resTxt = c => c.elige ? c.res : `${c.lhs} = ${es(c.val, c.dec)} ${ud(c)}`.trim();
+function papel(j, cerrado) {
+  const fi = (t, cont, now) => `<div class="r-pfila ${now ? 'now' : ''}"><b>${t}</b><div class="r-pc">${cont}</div></div>`;
+  const dat = j.datos.map((d, i) => { const hecho = cerrado || J.modo === 3 || i < J.d || J.fase !== 'datos'; return `<span class="r-slot ${hecho ? '' : 'vacio'} ${!hecho && i === J.d ? 'now' : ''}">${fs(d.sym)} = ${hecho ? d.val : '___'}</span>`; }).join('');
+  const hechos = J.done || [], ver = i => cerrado || hechos.includes(i);
+  const form = j.calc.map((c, i) => !c.elige && (ver(i) || (i === J.c && J.fase === 'res' && J.modo !== 3)) ? `<div>${fs(fTxt(c))}</div>` : '').join('');
+  const nums = j.calc.map((c, i) => !c.elige && ver(i) ? `<div>${fs(c.lhs)} = ${c.nums}</div>` : '').join('');
+  const res = j.calc.map((c, i) => ver(i) ? `<span class="r-amar">${fs(resTxt(c))}</span>` : '').join('');
+  return `<div class="r-et" style="margin-top:12px">Tu papel</div><div class="r-papel" style="margin-top:0">
+   ${fi('1 Datos', dat, J.fase === 'datos')}${fi('2 Fórmula', form || '<span class="r-ayuda">todavía nada</span>', J.fase === 'form')}${fi('3 Números', nums, J.fase === 'res')}${fi('4 Resultado', res, false)}</div>`;
+}
+// valores que ya se ven en el dibujo
+function valores(j, fin) {
+  const v = {};
+  j.datos.forEach((d, i) => { if (fin || J.modo === 3 || J.fase !== 'datos' || i < J.d) v[d.k] = d.val; });
+  j.calc.forEach((c, i) => { if (fin || J.done.includes(i)) v[c.k] = c.elige ? c.res : `${es(c.val, c.dec)} ${ud(c)}`; });
+  return v;
+}
+const nEsq = e => e === 22 ? 2 : e;
+function etapa(j, fin) {
+  if (J.ver) return J.ver;
+  if (fin) return TIPO.esqs.length > 1 ? 2 : 1;
+  if (J.fase === 'datos') return 1;
+  return nEsq(j.calc[J.c].esq);
+}
+function dibujo(j, fin) {
+  const t = TIPO, n = etapa(j, fin), hl = fin ? null : J.fase === 'datos' ? j.datos[J.d].k : j.calc[J.c].k;
+  const tabs = t.esqs.length > 1 ? `<div class="r-esqs">${t.esqs.map((x, i) => `<button type="button" class="${n === i + 1 ? 'on' : ''}" data-esq="${i + 1}"><b>Esquema ${i + 1}</b><small>${x}</small></button>`).join('')}</div>` : `<div class="r-esqs uno"><span class="on"><b>Esquema</b><small>${t.esqs[0]}</small></span></div>`;
+  return `<div><div class="r-et">Dibujo</div>${tabs}<div class="r-dib" id="rdib">${TIPO.escena(n, valores(j, fin), J.ver ? null : hl, j.esc || {})}</div></div>`;
+}
+function parte() {
+  const j = J.list[J.i], fin = J.fase === 'fin';
+  const act = J.fase === 'datos' && j.datos[J.d] && j.datos[J.d].tok;
+  const caso = `<div><div class="r-et">El caso</div><div class="r-caso">${textoCaso(fs(j.txt), j, act)}</div>
+    <div class="r-et" style="margin-top:10px">Pregunta</div><div class="r-preg" style="margin-top:0">${fs(j.preg)}</div></div>`;
+  pinta(`${barra(J.titulo, pips(J.list.length, J.i))}<article class="r-parte">
+    <div class="r-cab"><span class="r-obra">${j.obra}</span>${orgTag(j)}</div>
+    <div class="r-dos"><div>${caso}${papel(j, fin)}</div><div>${dibujo(j, fin)}${accion(j)}</div></div></article>`, 'p' + J.n + ':' + J.i);
+  const inp = $('#rval'); if (inp && !('ontouchstart' in window)) inp.focus();
+}
+// cuando cambia el esquema, el guía lo dice
+function avisoEsq(j) {
+  if (J.modo === 3 || J.fase === 'datos' || J.fase === 'fin') return '';
+  const c = j.calc[J.c], antes = J.c ? j.calc[J.c - 1].esq : 1;
+  return c.esq !== antes ? TIPO.avisos[c.esq] || '' : '';
+}
+function accion(j) {
+  const msg = J.msg ? `<div class="r-msg ${J.msgOk ? 'ok' : 'ko'}">${fs(J.msg)}</div>` : '';
+  const av = J.aviso ? `<div class="r-aviso">${fs(J.aviso)}</div>` : '';
+  if (J.fase === 'datos') {
+    const d = j.datos[J.d];
+    if (d.tok) return `<div class="r-acc">${dice(`<div class="r-ins">Paso 1. Apunta los datos en el esquema 1. Toca en el enunciado el valor de ${fs(d.sym)}.</div>${msg}`)}</div>`;
+    J.opts = J.opts || shuffle(d.opts);
+    return `<div class="r-acc">${dice(`<div class="r-ins">Paso 1. ${fs(d.q)}</div>${msg}<div class="r-opts">${J.opts.map((o, i) => `<button type="button" class="r-op" data-dc="${esc2(o)}"><span class="l">${'ABC'[i]}</span><span>${o}</span></button>`).join('')}</div>`)}</div>`;
+  }
+  if (J.fase === 'form') {
+    const c = j.calc[J.c], nPas = j.calc.length, multi = ` (${J.c + 1} de ${nPas})`;
+    if (c.elige) {
+      J.fopts = J.fopts || conBuena(c.ok, c.malas);
+      return `<div class="r-acc">${av}${dice(`<div class="r-ins">${fs(c.q)}${J.modo === 3 ? '' : multi}</div>${msg}<div class="r-opts">${J.fopts.map((o, i) => `<button type="button" class="r-op ${J.tachadas && J.tachadas.includes(o) ? 'mal' : ''}" data-el="${esc2(o)}"><span class="l">${'ABC'[i]}</span><span>${fs(o)}</span></button>`).join('')}</div>`)}</div>`;
+    }
+    if (J.modo === 1) {
+      J.fopts = J.fopts || conBuena(fTxt(c), c.mal);
+      return `<div class="r-acc">${av}${dice(`<div class="r-ins">Paso 2. ¿Qué fórmula uso para ${fs(c.lhs)}?${multi}</div>${msg}<div class="r-opts">${J.fopts.map((o, i) => `<button type="button" class="r-op ${J.tachadas && J.tachadas.includes(o) ? 'mal' : ''}" data-ff="${esc2(o)}"><span class="l">${'ABC'[i]}</span><span>${fs(o)}</span></button>`).join('')}</div>`)}</div>`;
+    }
+    J.banco = J.banco || shuffle([...c.f, ...c.extra]).map((x, i) => ({x, i}));
+    return `<div class="r-acc">${av}${dice(`<div class="r-ins">Paso 2. Monta con las fichas la fórmula de ${fs(c.lhs)}.${multi}</div>${msg}
+      <div class="r-monta"><span>${fs(c.lhs)} =</span>${J.tiles.length ? J.tiles.map((b, i) => `<button type="button" class="r-f puesta" data-q="${i}">${fs(b.x)}</button>`).join('') : '<span class="h">toca las fichas de abajo</span>'}</div>
+      <div class="r-fichas">${J.banco.map(b => `<button type="button" class="r-f" data-t="${b.i}" ${J.tiles.includes(b) ? 'disabled' : ''}>${fs(b.x)}</button>`).join('')}</div>
+      <div class="r-row"><button type="button" class="r-b pri" data-a="compf">Comprobar</button>${J.tiles.length ? '<button type="button" class="r-b" data-a="borrarf">Borrar todo</button>' : ''}</div>`)}</div>`;
+  }
+  if (J.fase === 'res') {
+    const c = j.calc[J.c], pista = J.modo === 1 || J.re >= 2;
+    const ins = J.modo === 3 ? `Resuélvelo en tu papel y escribe aquí ${fs(c.lhs)}.` : `Paso 3. Calcula ${fs(c.lhs)} con tu calculadora y pon la unidad.`;
+    const dec = c.unit === 'A' ? 'Escribe todos los decimales, o pásalo a mA (× 1000).' : 'Redondea a dos decimales.';
+    return `<div class="r-acc">${av}${dice(`<div class="r-ins">${ins}</div>
+      ${J.modo !== 3 ? `<div class="r-num">${fs(fTxt(c))}</div>` : ''}${(pista && J.modo !== 3) || J.re >= 2 ? `<div class="r-num">En la calculadora: <b>${c.nums}</b></div>` : ''}${msg}
+      <div class="r-res"><label for="rval">${fs(c.lhs)} =</label><input id="rval" inputmode="decimal" autocomplete="off" value="${J.tecleado || ''}" aria-label="Resultado">
+      <span class="r-us">${(J.uds = J.uds || shuffle(c.units)).map(u => `<button type="button" class="r-u ${J.unit === u ? 'on' : ''}" data-u="${u}">${u}</button>`).join('')}</span></div>
+      <div class="r-ayuda">Decimales con coma. ${dec}</div>
+      <div class="r-row"><button type="button" class="r-b pri big" data-a="compr">Comprobar</button></div>`)}</div>`;
+  }
+  // fin de obra
+  const ult = J.i === J.list.length - 1;
+  return `<div class="r-acc ok">${msg}${dice(`<div class="r-ins">${J.jerr ? 'Hecho. Problema terminado.' : '¡Clavado a la primera!'} ${j.obra} ya tiene luz.</div>
+     <div class="r-voz"><div><div class="e">Dilo en voz alta</div>${fs(j.frase)}</div><button type="button" class="r-ico" style="color:#000;border-color:#000" data-a="decir" aria-label="Escuchar">🔊</button></div>
+     <div class="r-row"><button type="button" class="r-b pri big" data-a="sig">${ult ? 'Terminar' : 'Siguiente problema'}</button></div>`)}</div>`;
+}
+const esc2 = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+function tropiezo() { J.err++; J.jerr++; }
+function acabaObra(j) {
+  J.fase = 'fin'; J.aviso = '';
+  S.lit[j.obra] = 1; S.jobs += 1;
+  if (J.jerr) { S.fails[j.sub] = (S.fails[j.sub] || 0) + 1; } else if (J.opt.repaso && S.fails[j.sub]) { S.fails[j.sub]--; if (!S.fails[j.sub]) delete S.fails[j.sub]; }
+  S.log.push({s:j.sub, e:J.jerr, m:J.modo, d:Date.now()}); if (S.log.length > 300) S.log.shift();
+  save(); J.jerr ? SND.ok() : SND.win(); parte();
+}
+// pasa a la siguiente cuenta; msg = lo que se queda escrito (explicación del acierto o la solución)
+function sigCalc(j, msg = '', ok = true) {
+  J.done.push(J.c); J.fopts = null; J.banco = null; J.tiles = []; J.tachadas = null; J.fe = 0; J.re = 0; J.unit = null; J.uds = null; J.tecleado = ''; J.ver = null;
+  J.msg = msg; J.msgOk = ok;
+  if (J.modo === 3) {
+    J.pi++;
+    if (J.pi >= J.pide.length) { J.done = j.calc.map((_, k) => k); return acabaObra(j); }
+    J.c = J.pide[J.pi]; J.fase = j.calc[J.c].elige ? 'form' : 'res'; return parte();
+  }
+  if (J.c + 1 >= j.calc.length) return acabaObra(j);
+  J.c++; J.fase = 'form'; J.aviso = avisoEsq(j); parte();
+}
+function clicParte(a, el) {
+  const j = J.list[J.i];
+  if (el.dataset.esq) { const n = +el.dataset.esq; J.ver = n === J.ver ? null : n; SND.clic(); return parte(); }  // mirar otro esquema sin perder el paso
+  J.ver = null;
+  if (el.dataset.tok) { const d = j.datos[J.d];
+    if (el.dataset.tok === d.tok) { J.usados[d.tok] = 1; SND.ok(); J.msg = ''; J.d++; if (J.d >= j.datos.length) { J.fase = 'form'; J.aviso = avisoEsq(j); } J.opts = null; }
+    else { SND.bad(); tropiezo(); J.msg = `Eso es ${j.toks[el.dataset.tok].n}. Aquí busco ${d.sym}.`; J.msgOk = false; }
+    return parte(); }
+  if (el.dataset.dc != null) { const d = j.datos[J.d];
+    if (el.dataset.dc === d.val) { SND.ok(); J.msg = ''; J.d++; if (J.d >= j.datos.length) { J.fase = 'form'; J.aviso = avisoEsq(j); } J.opts = null; }
+    else { SND.bad(); tropiezo(); J.msg = `${el.dataset.dc} no es. Mira otra vez lo que dice el caso.`; J.msgOk = false; }
+    return parte(); }
+  if (el.dataset.el != null) { const c = j.calc[J.c];
+    if (el.dataset.el === c.ok) { SND.ok(); return sigCalc(j, c.ex, true); }
+    SND.bad(); tropiezo(); J.tachadas = (J.tachadas || []).concat(el.dataset.el); J.msg = c.por[el.dataset.el] || 'Esa no. Mira los números que tienes en el papel.'; J.msgOk = false; return parte(); }
+  if (el.dataset.ff != null) { const c = j.calc[J.c];
+    if (el.dataset.ff === fTxt(c)) return formOk(j);
+    SND.bad(); tropiezo(); J.tachadas = (J.tachadas || []).concat(el.dataset.ff); J.msg = 'Esa no. Fíjate en qué esquema estás y qué piezas tiene.'; J.msgOk = false; return parte(); }
+  if (el.dataset.t != null) { const b = J.banco.find(x => x.i === +el.dataset.t); if (!J.tiles.includes(b)) J.tiles.push(b); SND.clic(); J.msg = ''; return parte(); }
+  if (el.dataset.q != null) { J.tiles.splice(+el.dataset.q, 1); return parte(); }
+  if (el.dataset.u) { J.unit = el.dataset.u; const i = $('#rval'); J.tecleado = i ? i.value : ''; return parte(); }
+  if (a === 'borrarf') { J.tiles = []; return parte(); }
+  if (a === 'compf') { const c = j.calc[J.c];
+    if ([c.f, ...c.alts].some(f => mismaFormula(J.tiles.map(b => b.x), f))) return formOk(j);
+    SND.bad(); tropiezo(); J.fe++;
+    if (J.fe >= 2) { J.msg = `La buena es: ${fTxt(c)}. Cópiala con las fichas.`; } else J.msg = J.tiles.length ? 'Todavía no. Mira qué letras sobran o qué orden llevan.' : 'Toca las fichas para montar la fórmula.';
+    J.msgOk = false; return parte(); }
+  if (a === 'compr') return compRes(j);
+  if (a === 'decir') return voz(fs(j.frase).replace(/<sub>|<\/sub>/g, ''));
+  if (a === 'sig') { if (J.i + 1 >= J.list.length) return finSesion(); J.i++; J.fopts = null; J.banco = null; return empezarJob(); }
+}
+function formOk(j) { SND.ok(); J.msg = ''; J.fopts = null; J.tachadas = null; J.aviso = '';
+  J.fase = 'res'; J.re = 0; J.unit = null; J.uds = null; J.tecleado = ''; parte(); }
+// la cuenta vale en A o en mA (si la unidad lo permite)
+function valEn(c, u) { return c.alt && c.alt[u] ? c.val * c.alt[u] : c.val; }
+function compRes(j) {
+  const c = j.calc[J.c], raw = $('#rval').value; J.tecleado = raw; const x = leeNum(raw);
+  if (isNaN(x)) { J.msg = 'Escribe un número, por ejemplo 0,4492.'; J.msgOk = false; return parte(); }
+  const okA = acierta(x, c.val, c.tol), okM = c.alt && Object.values(c.alt).some(m => acierta(x, c.val * m, c.tol));
+  if ((okA || okM) && !J.unit) { J.msg = 'El número está bien. Ahora toca la unidad.'; J.msgOk = true; return parte(); }
+  if (J.unit && acierta(x, valEn(c, J.unit), c.tol) && (J.unit === c.unit || (c.alt && c.alt[J.unit]))) { SND.ok(); return sigCalc(j, c.exOk || '', true); }
+  if (okA || okM) { SND.bad(); tropiezo(); J.msg = `El número está bien, pero la unidad no es ${J.unit}.${okM && J.unit === c.unit ? ' Ese número está en otra unidad: ' + Object.keys(c.alt).join(' o ') + '.' : okA ? ' Ese número está en ' + c.unit + '.' : ''}`; J.msgOk = false; return parte(); }
+  SND.bad(); tropiezo(); J.re++;
+  const tr = c.trap.find(([v]) => !acierta(v, c.val) && (acierta(x, v) || (c.alt && Object.values(c.alt).some(m => acierta(x, v * m)))));
+  const casi = [c.val, ...Object.values(c.alt || {}).map(m => c.val * m)].some(v => Math.abs(x - v) <= Math.abs(v) * 0.012);
+  J.msg = tr ? tr[1] : casi ? 'Casi. Has redondeado demasiado: escribe más decimales (o pásalo a mA).' : 'No sale. Repite la cuenta despacio.'; J.msgOk = false;
+  if (J.re >= 3) return sigCalc(j, `El resultado es ${es(c.val, c.dec)} ${ud(c)}. Mira cómo sale en tu papel y lo repites luego.`, false);
+  parte();
+}
+function finSesion() {
+  const n = J.list.length, ratio = J.err / n, st = ratio <= .5 ? 3 : ratio <= 2 ? 2 : 1;
+  if (J.id) guarda(J.id, st); SND.win();
+  const forms = [];
+  J.list.forEach(j => j.calc.forEach(c => { if (c.elige) return; const f = fTxt(c); if (!forms.includes(f)) forms.push(f); }));
+  pinta(`${barra(J.titulo)}<article class="r-parte r-fin"><div class="r-star" aria-label="${st} estrellas de 3">${estrellas(st)}</div><h2>Jornada terminada</h2>
+    <p>${n} ${n === 1 ? 'problema' : 'problemas'}. ${J.err ? `${J.err} ${J.err === 1 ? 'tropiezo' : 'tropiezos'} por el camino.` : 'Ni un tropiezo.'}</p>
+    <div class="r-take"><div class="r-et">Lo que te llevas</div>${forms.slice(0, 14).map(f => `<div>${fs(f)}</div>`).join('')}</div>
+    <div class="r-row" style="justify-content:center"><button type="button" class="r-b pri big" data-a="menu">Volver al menú</button></div></article>`);
+}
+
+// ---------- zonas ----------
+function zona(m) {
+  if (m === 'c' || m === 'd') return sesion(TIPO.clase.map(f => f()), m === 'c' ? 1 : 3, `${TIPO.n} · Los de clase`, m);
+  const subs = TIPO.orden;
+  const l = m === '1' ? subs.map(s => hacer(s)) : m === '2' ? shuffle(subs).map(s => hacer(s)) : Array.from({length:3}, () => hacer(pick(subs)));
+  sesion(l, +m, `${TIPO.n} · ${m === '1' ? 'Aprendiz' : m === '2' ? 'Oficial' : 'Jefe de obra'}`, m);
+}
+function repaso() {
+  const orden = Object.entries(S.fails).sort((a, b) => b[1] - a[1]).map(x => x[0]).filter(s => TIPO.subs[s]);
+  if (!orden.length) return inicio();
+  const l = []; for (let i = 0; i < 3; i++) l.push(hacer(orden[i % orden.length]));
+  sesion(l, 2, 'Repaso de fallos', null, {repaso:true});
+}
+
+const textoPlano = (s, j) => fs(s.replace(/\{(\w+)\}/g, (_, k) => j.toks[k].v));
+// ---------- examen ----------
+let E = null;
+const pideE = j => j.calc.filter(c => c.pide && !c.elige && c.k !== 'comp');
+// En el examen también entran las preguntas de opciones (diferencial, riesgo, DNI del cable...), con las opciones barajadas una vez.
+const pideO = j => { j.exO = j.exO || j.calc.filter(c => c.elige && c.pide).map(c => ({c, ops:shuffle([c.ok, ...c.malas])})); return j.exO; };
+function examen() {
+  const l = [...shuffle(TIPO.clase).slice(0, 2).map(f => f()), hacer(pick(TIPO.orden)), hacer(pick(TIPO.orden))];
+  E = {l:shuffle(l), i:0, res:[]}; E.l.forEach(j => j.obra = lugarObra()); rondaE(); }
+function rondaE() {
+  const j = E.l[E.i]; if (!j) return finE();
+  const pide = pideE(j);
+  pinta(`${barra('Examen', pips(E.l.length, E.i))}<article class="r-parte"><div class="r-cab">${orgTag(j)}</div><div class="r-et">El caso</div><div class="r-caso">${textoPlano(j.txt, j)}</div><div class="r-et" style="margin-top:10px">Pregunta</div><div class="r-preg" style="margin-top:0">${fs(j.preg)}</div>
+    <div class="r-et" style="margin-top:12px">${pide.length ? 'Hazlo en tu papel y escribe los resultados' : 'Elige la respuesta de cada pregunta'}</div>
+    ${pide.map((c, k) => `<div class="r-res"><label for="ex${k}">${fs(c.lhs)} =</label><input id="ex${k}" inputmode="decimal" autocomplete="off" value="${(E.val && E.val[k]) || ''}"><span class="r-us">${c.units.slice().sort().map(u => `<button type="button" class="r-u ${(E.un && E.un[k]) === u ? 'on' : ''}" data-eu="${k}|${u}">${u}</button>`).join('')}</span></div>`).join('')}
+    ${pideO(j).map((o, k) => `<div class="r-et" style="margin-top:12px">${fs(o.c.q)}</div><div class="r-opts">${o.ops.map((x, i) => `<button type="button" class="r-op" style="${(E.sel && E.sel[k]) === i ? 'outline:4px solid #000;background:#fff6d6' : ''}" data-eo="${k}|${i}"><span class="l">${'ABC'[i]}</span><span>${fs(x)}</span></button>`).join('')}</div>`).join('')}
+    ${E.msg ? `<div class="r-msg ko" style="margin-top:8px">${E.msg}</div>` : ''}<div class="r-row"><button type="button" class="r-b pri big" data-a="e:ok">Entregar este</button></div></article>`, 'e' + E.i);
+}
+function leeE() { E.val = $$('[id^=ex]').map(i => i.value); }
+function clicE(a, el) {
+  if (el.dataset.eo) { leeE(); const [k, i] = el.dataset.eo.split('|').map(Number); E.sel = E.sel || {}; E.sel[k] = i; SND.clic(); return rondaE(); }
+  if (el.dataset.eu) { leeE(); const [k, u] = el.dataset.eu.split('|'); E.un = E.un || {}; E.un[k] = u; return rondaE(); }
+  if (a === 'e:ok') { leeE(); const j = E.l[E.i], pide = pideE(j), ops = pideO(j), sel = E.sel || {};
+    if (pide.some((c, k) => isNaN(leeNum(E.val[k])) || !(E.un && E.un[k])) || ops.some((o, k) => sel[k] == null)) { E.msg = 'Falta algo: escribe cada número con su unidad y elige una respuesta en cada pregunta.'; return rondaE(); }
+    const bienK = [...pide.map((c, k) => (E.un[k] === c.unit || (c.alt && c.alt[E.un[k]])) && acierta(leeNum(E.val[k]), valEn(c, E.un[k]), c.tol)), ...ops.map((o, k) => o.ops[sel[k]] === o.c.ok)];
+    const puso = [...pide.map((c, k) => `${bienK[k] ? '✔' : '✘'} ${fs(c.lhs)} = ${E.val[k]} ${E.un[k]}`), ...ops.map((o, k) => `${bienK[pide.length + k] ? '✔' : '✘'} ${fs(o.ops[sel[k]])}`)];
+    E.res.push({j, bien:bienK.filter(Boolean).length / bienK.length, puso:puso.join('<br>')});
+    if (bienK.every(Boolean)) { S.lit[j.obra] = 1; S.jobs++; } else S.fails[j.sub] = (S.fails[j.sub] || 0) + 1;
+    save(); SND.clic(); E.i++; E.val = null; E.un = null; E.sel = null; E.msg = ''; rondaE(); }
+}
+function finE() {
+  const n = E.res.length, ok = E.res.reduce((a, r) => a + r.bien, 0), nota = ok / n * 10;
+  S.ex.push({nota, n, d:Date.now()}); save(); SND.win();
+  const sol = r => r.j.calc.map(c => c.elige ? (c.pide ? `<b>${fs(c.res)}</b>` : '') : `${fs(fTxt(c))} = <b>${es(c.val, c.dec)} ${ud(c)}</b>`).filter(Boolean).join('<br>');
+  pinta(`${barra('Examen')}<article class="r-parte"><div class="r-fin"><h2>Nota: ${es(nota, 1)}</h2><p>Cada problema vale lo mismo. Cada resultado bien suma su parte.</p></div>
+   <div class="r-tw"><table class="r-t"><tr><th>Problema</th><th>Pusiste</th><th>Cómo sale</th></tr>${E.res.map(r => `<tr style="background:${r.bien === 1 ? '#eef9f0' : r.bien ? '#fff8e5' : '#fdeeed'}"><td>${textoPlano(r.j.txt, r.j)}</td><td>${r.puso}</td><td>${sol(r)}</td></tr>`).join('')}</table></div>
+   <div class="r-row" style="justify-content:center"><button type="button" class="r-b pri big" data-a="menu">Volver al menú</button></div></article>`);
+}
+
+// ---------- panel de V ----------
+const NOMSUB = TIPO.nomsub;
+function informe() {
+  const f = Object.entries(S.fails).sort((a, b) => b[1] - a[1]).map(([s, n]) => `${NOMSUB[s] || s}: ${n}`).join(', ') || 'ninguno';
+  const st = Object.entries(S.st).map(([k, v]) => `${k}=${v}`).join(', ') || 'nada';
+  const ex = S.ex.slice(-5).map(e => es(e.nota, 1)).join(', ') || 'ninguno';
+  return `${TIPO.n} (Distribución, juego ${TIPO.num}) · informe\nProblemas hechos: ${S.jobs}. Talleres con luz: ${Object.keys(S.lit).length}/${LUGARES.length}.\nFallos por problema: ${f}\nEstrellas: ${st}\nExámenes: ${ex}`;
+}
+function panel() {
+  const fal = Object.entries(S.fails).sort((a, b) => b[1] - a[1]);
+  pinta(`${barra('Panel de V')}<article class="r-parte"><h2 style="font-size:32px">Cómo va M</h2><p>${S.jobs} problemas hechos, ${S.ex.length} exámenes${S.ex.length ? ` (última nota ${es(S.ex[S.ex.length - 1].nota, 1)})` : ''}.</p>
+   <div class="r-tw"><table class="r-t"><tr><th>Problema que más falla</th><th>Fallos</th></tr>${fal.length ? fal.map(([s, n]) => `<tr><td>${NOMSUB[s] || s}</td><td>${n}</td></tr>`).join('') : '<tr><td colspan="2">Sin fallos guardados</td></tr>'}</table></div>
+   <p class="r-ayuda">Los resultados aceptan un pequeño redondeo. Las corrientes valen en A o en mA. «Los de clase» son los enunciados tal cual (controles de César y ejercicios de clase), con M = n.º 2.</p>
+   <div class="r-row"><button type="button" class="r-b pri" data-a="p:copia">Copiar informe para Claude</button><button type="button" class="r-b" data-a="p:reset">${RT.dataset.borrar ? 'Pulsa otra vez para borrar' : 'Borrar el progreso'}</button></div><div id="rcopia"></div></article>`);
+}
+function clicP(a) {
+  if (a === 'p:copia') { const t = informe(); const ok = () => toast('Informe copiado'); const no = () => { $('#rcopia').innerHTML = `<textarea class="r-copia" readonly>${t}</textarea>`; $('#rcopia textarea').select(); };
+    try { navigator.clipboard.writeText(t).then(ok, no); } catch (e) { no(); } }
+  if (a === 'p:reset') { if (RT.dataset.borrar) { delete RT.dataset.borrar; S = Object.assign(fresh(), {mute:S.mute}); save(); inicio(); } else { RT.dataset.borrar = '1'; panel(); } }
+}
+
+// ---------- reparto de clics ----------
+function onClick(e) {
+  const el = e.target.closest('button'); if (!el || el.disabled) return;
+  const a = el.dataset.a || '';
+  if (a === 'mute') { S.mute = !S.mute; save(); el.textContent = S.mute ? '🔇' : '🔊'; return; }
+  if (a !== 'p:reset') delete RT.dataset.borrar;
+  if (a === 'menu') { J = null; return inicio(); }
+  if (a === 'panel') return panel();
+  if (a === 'repaso') return repaso();
+  if (a === 'examen') return examen();
+  if (a.startsWith('z:')) return zona(a.slice(2));
+  if (a.startsWith('e:') || el.dataset.eu || el.dataset.eo) return clicE(a, el);
+  if (a.startsWith('p:')) return clicP(a);
+  if (J) return clicParte(a, el);
+}
+function abrir(root) {
+  RT = root; RT.classList.add('rs');
+  try { const t = localStorage.getItem(KEY); if (t) S = Object.assign(fresh(), JSON.parse(t)); } catch (e) {}
+  if (!RT.dataset.on) { RT.dataset.on = '1'; RT.addEventListener('click', onClick); RT.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'rval') { e.preventDefault(); compRes(J.list[J.i]); } }); }
+  inicio();
+}
+return {abrir, _j:() => J, _s:() => S, _prueba:(sub, modo) => sesion([hacer(sub)], modo, 'Prueba', null)};
+
+})();
+JUEGO.abrir(document.getElementById('ruta'));
+</script>
+</body></html>

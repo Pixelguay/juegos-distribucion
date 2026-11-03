@@ -129,6 +129,7 @@ function es(x, d = 2) {
   return (neg && +s !== 0 ? '−' : '') + e + (f ? ',' + f : '');
 }
 function rnd(a, b, step = 1) { const n = Math.round((b - a) / step); return +(a + Math.floor(Math.random() * (n + 1)) * step).toFixed(6); }
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 const om = x => es(x, 0) + ' Ω';
 const MA = {mA:1000};
@@ -343,7 +344,6 @@ const WEB = typeof location !== 'undefined' && /github\.io$/.test(location.hostn
 const fresh = () => ({v:1, jobs:0, lit:{}, st:{}, fails:{}, mute:false, ex:[], log:[]});
 let S = fresh();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const RANGOS = [[0,'Becario con casco'],[5,'Peón de cable'],[15,'Oficial de segunda'],[30,'Oficial de primera'],[50,'Instalador de élite'],[80,'Jefe de obra']];
 const rango = () => { let r = RANGOS[0], n = RANGOS[1]; RANGOS.forEach((x, i) => { if (S.jobs >= x[0]) { r = x; n = RANGOS[i + 1]; } }); return {n:r[1], pct:n ? (S.jobs - r[0]) / (n[0] - r[0]) : 1, sig:n}; };
 
@@ -380,7 +380,7 @@ function inicio() {
   const card = (tit, txt, btn) => `<div class="r-card"><div class="r-chead">${avatar()}<div><h3>${tit}</h3><p>${txt}</p></div></div>${btn}</div>`;
   const md = (m, t, s) => `<button type="button" class="r-b" data-a="z:${m}">${t}<small>${s}</small><small class="est">${estrellas(S.st[m] || 0)}</small></button>`;
   const ids = TIPO.clase.map(f => f().id).join(', ');
-  pinta(`<div class="r-bar">${WEB ? '<a class="r-back" href="index.html">← Los 9 juegos</a>' : ''}<span class="r-jn">Juego ${TIPO.num} de 9 · Distribución</span><span class="sp"></span><button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>
+  pinta(`<div class="r-bar">${WEB ? '<a class="r-back" href="index.html">← Todos los juegos</a>' : ''}<span class="r-jn">Juego ${TIPO.num} de 10 · Distribución</span><span class="sp"></span><button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>
    <header class="r-hero"><div><h1>${TIPO.n}</h1><p class="r-lead">${TIPO.lead}</p>
     <div class="r-st"><div><b>${en}/${LUGARES.length}</b><span>talleres con luz</span></div><div><b>${S.jobs}</b><span>problemas hechos</span></div><div><b>${S.ex.length}</b><span>exámenes</span></div></div>
     <p style="margin-bottom:4px"><b>${r.n}</b>${r.sig ? ` · siguiente a ${r.sig[0]} problemas` : ''}</p><div class="r-xp"><i style="width:${Math.round(r.pct * 100)}%"></i></div></div>
@@ -432,7 +432,7 @@ function papel(j, cerrado) {
 function valores(j, fin) {
   const v = {};
   j.datos.forEach((d, i) => { if (fin || J.modo === 3 || J.fase !== 'datos' || i < J.d) v[d.k] = d.val; });
-  j.calc.forEach((c, i) => { if (!c.elige && (fin || J.done.includes(i))) v[c.k] = `${es(c.val, c.dec)} ${ud(c)}`; });
+  j.calc.forEach((c, i) => { if (fin || J.done.includes(i)) v[c.k] = c.elige ? c.res : `${es(c.val, c.dec)} ${ud(c)}`; });
   return v;
 }
 const nEsq = e => e === 22 ? 2 : e;
@@ -604,6 +604,8 @@ const textoPlano = (s, j) => fs(s.replace(/\{(\w+)\}/g, (_, k) => j.toks[k].v));
 // ---------- examen ----------
 let E = null;
 const pideE = j => j.calc.filter(c => c.pide && !c.elige && c.k !== 'comp');
+// En el examen también entran las preguntas de opciones (diferencial, riesgo, DNI del cable...), con las opciones barajadas una vez.
+const pideO = j => { j.exO = j.exO || j.calc.filter(c => c.elige && c.pide).map(c => ({c, ops:shuffle([c.ok, ...c.malas])})); return j.exO; };
 function examen() {
   const l = [...shuffle(TIPO.clase).slice(0, 2).map(f => f()), hacer(pick(TIPO.orden)), hacer(pick(TIPO.orden))];
   E = {l:shuffle(l), i:0, res:[]}; E.l.forEach(j => j.obra = lugarObra()); rondaE(); }
@@ -611,24 +613,27 @@ function rondaE() {
   const j = E.l[E.i]; if (!j) return finE();
   const pide = pideE(j);
   pinta(`${barra('Examen', pips(E.l.length, E.i))}<article class="r-parte"><div class="r-cab">${orgTag(j)}</div><div class="r-et">El caso</div><div class="r-caso">${textoPlano(j.txt, j)}</div><div class="r-et" style="margin-top:10px">Pregunta</div><div class="r-preg" style="margin-top:0">${fs(j.preg)}</div>
-    <div class="r-et" style="margin-top:12px">Hazlo en tu papel y escribe los resultados</div>
+    <div class="r-et" style="margin-top:12px">${pide.length ? 'Hazlo en tu papel y escribe los resultados' : 'Elige la respuesta de cada pregunta'}</div>
     ${pide.map((c, k) => `<div class="r-res"><label for="ex${k}">${fs(c.lhs)} =</label><input id="ex${k}" inputmode="decimal" autocomplete="off" value="${(E.val && E.val[k]) || ''}"><span class="r-us">${c.units.slice().sort().map(u => `<button type="button" class="r-u ${(E.un && E.un[k]) === u ? 'on' : ''}" data-eu="${k}|${u}">${u}</button>`).join('')}</span></div>`).join('')}
+    ${pideO(j).map((o, k) => `<div class="r-et" style="margin-top:12px">${fs(o.c.q)}</div><div class="r-opts">${o.ops.map((x, i) => `<button type="button" class="r-op" style="${(E.sel && E.sel[k]) === i ? 'outline:4px solid #000;background:#fff6d6' : ''}" data-eo="${k}|${i}"><span class="l">${'ABC'[i]}</span><span>${fs(x)}</span></button>`).join('')}</div>`).join('')}
     ${E.msg ? `<div class="r-msg ko" style="margin-top:8px">${E.msg}</div>` : ''}<div class="r-row"><button type="button" class="r-b pri big" data-a="e:ok">Entregar este</button></div></article>`, 'e' + E.i);
 }
 function leeE() { E.val = $$('[id^=ex]').map(i => i.value); }
 function clicE(a, el) {
+  if (el.dataset.eo) { leeE(); const [k, i] = el.dataset.eo.split('|').map(Number); E.sel = E.sel || {}; E.sel[k] = i; SND.clic(); return rondaE(); }
   if (el.dataset.eu) { leeE(); const [k, u] = el.dataset.eu.split('|'); E.un = E.un || {}; E.un[k] = u; return rondaE(); }
-  if (a === 'e:ok') { leeE(); const j = E.l[E.i], pide = pideE(j);
-    if (pide.some((c, k) => isNaN(leeNum(E.val[k])) || !(E.un && E.un[k]))) { E.msg = 'Falta algo: escribe cada número y su unidad.'; return rondaE(); }
-    const bienK = pide.map((c, k) => (E.un[k] === c.unit || (c.alt && c.alt[E.un[k]])) && acierta(leeNum(E.val[k]), valEn(c, E.un[k]), c.tol));
-    E.res.push({j, bien:bienK.filter(Boolean).length / pide.length, puso:pide.map((c, k) => `${bienK[k] ? '✔' : '✘'} ${fs(c.lhs)} = ${E.val[k]} ${E.un[k]}`).join('<br>')});
+  if (a === 'e:ok') { leeE(); const j = E.l[E.i], pide = pideE(j), ops = pideO(j), sel = E.sel || {};
+    if (pide.some((c, k) => isNaN(leeNum(E.val[k])) || !(E.un && E.un[k])) || ops.some((o, k) => sel[k] == null)) { E.msg = 'Falta algo: escribe cada número con su unidad y elige una respuesta en cada pregunta.'; return rondaE(); }
+    const bienK = [...pide.map((c, k) => (E.un[k] === c.unit || (c.alt && c.alt[E.un[k]])) && acierta(leeNum(E.val[k]), valEn(c, E.un[k]), c.tol)), ...ops.map((o, k) => o.ops[sel[k]] === o.c.ok)];
+    const puso = [...pide.map((c, k) => `${bienK[k] ? '✔' : '✘'} ${fs(c.lhs)} = ${E.val[k]} ${E.un[k]}`), ...ops.map((o, k) => `${bienK[pide.length + k] ? '✔' : '✘'} ${fs(o.ops[sel[k]])}`)];
+    E.res.push({j, bien:bienK.filter(Boolean).length / bienK.length, puso:puso.join('<br>')});
     if (bienK.every(Boolean)) { S.lit[j.obra] = 1; S.jobs++; } else S.fails[j.sub] = (S.fails[j.sub] || 0) + 1;
-    save(); SND.clic(); E.i++; E.val = null; E.un = null; E.msg = ''; rondaE(); }
+    save(); SND.clic(); E.i++; E.val = null; E.un = null; E.sel = null; E.msg = ''; rondaE(); }
 }
 function finE() {
   const n = E.res.length, ok = E.res.reduce((a, r) => a + r.bien, 0), nota = ok / n * 10;
   S.ex.push({nota, n, d:Date.now()}); save(); SND.win();
-  const sol = r => r.j.calc.filter(c => !c.elige).map(c => `${fs(fTxt(c))} = <b>${es(c.val, c.dec)} ${ud(c)}</b>`).join('<br>');
+  const sol = r => r.j.calc.map(c => c.elige ? (c.pide ? `<b>${fs(c.res)}</b>` : '') : `${fs(fTxt(c))} = <b>${es(c.val, c.dec)} ${ud(c)}</b>`).filter(Boolean).join('<br>');
   pinta(`${barra('Examen')}<article class="r-parte"><div class="r-fin"><h2>Nota: ${es(nota, 1)}</h2><p>Cada problema vale lo mismo. Cada resultado bien suma su parte.</p></div>
    <div class="r-tw"><table class="r-t"><tr><th>Problema</th><th>Pusiste</th><th>Cómo sale</th></tr>${E.res.map(r => `<tr style="background:${r.bien === 1 ? '#eef9f0' : r.bien ? '#fff8e5' : '#fdeeed'}"><td>${textoPlano(r.j.txt, r.j)}</td><td>${r.puso}</td><td>${sol(r)}</td></tr>`).join('')}</table></div>
    <div class="r-row" style="justify-content:center"><button type="button" class="r-b pri big" data-a="menu">Volver al menú</button></div></article>`);
@@ -666,7 +671,7 @@ function onClick(e) {
   if (a === 'repaso') return repaso();
   if (a === 'examen') return examen();
   if (a.startsWith('z:')) return zona(a.slice(2));
-  if (a.startsWith('e:') || el.dataset.eu) return clicE(a, el);
+  if (a.startsWith('e:') || el.dataset.eu || el.dataset.eo) return clicE(a, el);
   if (a.startsWith('p:')) return clicP(a);
   if (J) return clicParte(a, el);
 }
