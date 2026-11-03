@@ -49,15 +49,8 @@ h1{font-family:"Bebas Neue","Arial Narrow",sans-serif;font-weight:400;font-size:
     <a class="j" href="rlc.html" style="--c1:#331a3b;--c2:#ff7ac8;--f:'Righteous',sans-serif"><span class="n">8</span><span class="t">Corriente alterna R-L-C</span><span class="s">XL, XC, Z, I, φ, P, Q y S</span></a>
     <a class="j" href="cdt.html" style="--c1:#3a2516;--c2:#e39a4f;--f:'Alfa Slab One',serif"><span class="n">9</span><span class="t" style="font-size:20px">Caída de tensión y sección</span><span class="s">e, V que llega y sección del cable</span></a>
   </nav>
-  <p class="nota">Dentro de cada juego, «← Volver al menú» vuelve a su portada, y el botón amarillo de arriba vuelve a los 9 juegos. El progreso se guarda en este móvil.</p>
+  <p class="nota">Dentro de cada juego, «← Volver al menú» vuelve a su portada, y el botón «← Los 9 juegos» vuelve aquí. El progreso se guarda en este móvil.</p>
 </div>
-<div class="visor" id="visor" hidden><header><button type="button" id="cerrar">← Los 9 juegos</button><span id="nombre"></span></header><iframe id="marco" title="Juego"></iframe></div>
-<script>
-const visor = document.getElementById('visor'), marco = document.getElementById('marco');
-document.querySelectorAll('.j').forEach(a => a.addEventListener('click', e => {
-  e.preventDefault(); marco.src = a.getAttribute('href'); document.getElementById('nombre').textContent = a.querySelector('.t').textContent; visor.hidden = false; document.body.style.overflow = 'hidden';
-}));
-document.getElementById('cerrar').addEventListener('click', () => { visor.hidden = true; marco.src = 'about:blank'; document.body.style.overflow = ''; });
-</script>
+
 
 </body></html>

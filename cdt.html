@@ -101,6 +101,7 @@ textarea.r-copia{width:100%;height:120px;font-size:13px;margin-top:8px}
 .r-met-t{color:#fff;padding:10px 12px 0}
 .r-met{margin:4px 0 8px;padding:0 14px 0 34px;color:#fff;font-size:17px;line-height:1.5}.r-met li{margin:3px 0}.r-met li::marker{color:var(--sun);font-weight:700}
 .rs .r-pue{margin-top:16px}
+a.r-back{text-decoration:none;display:inline-block}
 
 .rs{--cell:#24170e;--cell2:#3a2516;--bus:rgba(205,127,50,.24);--sun:#e39a4f;--sun2:#9c5a1c;--fd:"Alfa Slab One","Arial Narrow",Arial,sans-serif;--fb:"Roboto Slab",Verdana,system-ui,sans-serif;--ff:"Roboto Slab",Verdana,sans-serif;
   background:var(--cell);background-image:repeating-linear-gradient(90deg,transparent 0 38px,var(--bus) 38px 40px),repeating-linear-gradient(0deg,transparent 0 38px,var(--bus) 38px 40px),linear-gradient(160deg,var(--cell2),var(--cell));background-size:auto;background-attachment:local}
@@ -338,6 +339,7 @@ const TIPO = {
 // (Fotovoltaica), con los esquemas 1 → 2 → 3 que cambian según el paso y preguntas de opciones.
 let RT;
 const KEY = 'dist-problemas-' + TIPO.id;
+const WEB = typeof location !== 'undefined' && /github\.io$/.test(location.hostname);   // en la web del móvil hay portada con los 9
 const fresh = () => ({v:1, jobs:0, lit:{}, st:{}, fails:{}, mute:false, ex:[], log:[]});
 let S = fresh();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
@@ -375,7 +377,7 @@ function inicio() {
   const card = (tit, txt, btn) => `<div class="r-card"><div class="r-chead">${avatar()}<div><h3>${tit}</h3><p>${txt}</p></div></div>${btn}</div>`;
   const md = (m, t, s) => `<button type="button" class="r-b" data-a="z:${m}">${t}<small>${s}</small><small class="est">${estrellas(S.st[m] || 0)}</small></button>`;
   const ids = TIPO.clase.map(f => f().id).join(', ');
-  pinta(`<div class="r-bar"><span class="r-jn">Juego ${TIPO.num} de 9 · Distribución</span><span class="sp"></span><button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>
+  pinta(`<div class="r-bar">${WEB ? '<a class="r-back" href="index.html">← Los 9 juegos</a>' : ''}<span class="r-jn">Juego ${TIPO.num} de 9 · Distribución</span><span class="sp"></span><button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>
    <header class="r-hero"><div><h1>${TIPO.n}</h1><p class="r-lead">${TIPO.lead}</p>
     <div class="r-st"><div><b>${en}/${LUGARES.length}</b><span>talleres con luz</span></div><div><b>${S.jobs}</b><span>problemas hechos</span></div><div><b>${S.ex.length}</b><span>exámenes</span></div></div>
     <p style="margin-bottom:4px"><b>${r.n}</b>${r.sig ? ` · siguiente a ${r.sig[0]} problemas` : ''}</p><div class="r-xp"><i style="width:${Math.round(r.pct * 100)}%"></i></div></div>
