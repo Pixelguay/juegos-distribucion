@@ -333,7 +333,10 @@ function barra(titulo, extra = '') {
   return `<div class="r-bar"><button type="button" class="r-back" data-a="menu">← Volver al menú</button><span class="r-tt">${titulo}</span><span class="sp"></span>${extra}<button type="button" class="r-ico" data-a="mute" aria-label="Sonido">${S.mute ? '🔇' : '🔊'}</button></div>`;
 }
 const pips = (n, i) => `<span class="r-pips" aria-label="Va por ${i + 1} de ${n}">${Array.from({length:n}, (_, k) => `<i class="${k < i ? 'ok' : k === i ? 'now' : ''}"></i>`).join('')}</span>`;
-const pinta = h => { RT.innerHTML = `<div class="r-in">${h}</div>`; RT.scrollTop = 0; };
+// clave: mientras sea la misma pantalla (el mismo problema), se queda donde estaba; si cambia, vuelve arriba.
+let CLAVE = null;
+const pinta = (h, clave = null) => { const y = RT.scrollTop, sigue = clave != null && clave === CLAVE; CLAVE = clave;
+  RT.innerHTML = `<div class="r-in">${h}</div>`; RT.scrollTop = sigue ? y : 0; };
 const $ = s => RT.querySelector(s), $$ = s => [...RT.querySelectorAll(s)];
 function estrellas(n) { return '★'.repeat(n) + '☆'.repeat(3 - n); }
 function guarda(id, n) { if ((S.st[id] || 0) < n) S.st[id] = n; save(); }
@@ -361,7 +364,8 @@ function inicio() {
 
 // ---------- parte de trabajo ----------
 let J = null;
-function sesion(list, modo, titulo, id, opt = {}) { J = {list, i:0, modo, titulo, id, err:0, opt}; empezarJob(); }
+let NSES = 0;
+function sesion(list, modo, titulo, id, opt = {}) { J = {list, i:0, modo, titulo, id, err:0, opt, n:++NSES}; empezarJob(); }
 function lugarObra() { const lib = LUGARES.filter(c => !S.lit[c]); return pick(lib.length ? lib : LUGARES); }
 function empezarJob() {
   const j = J.list[J.i]; j.obra = j.obra || lugarObra();
@@ -417,7 +421,7 @@ function parte() {
     <div class="r-et" style="margin-top:10px">Pregunta</div><div class="r-preg" style="margin-top:0">${fs(j.preg)}</div></div>`;
   pinta(`${barra(J.titulo, pips(J.list.length, J.i))}<article class="r-parte">
     <div class="r-cab"><span class="r-obra">${j.obra}</span>${orgTag(j)}</div>
-    <div class="r-dos"><div>${caso}${papel(j, fin)}</div><div>${dibujo(j, fin)}${accion(j)}</div></div></article>`);
+    <div class="r-dos"><div>${caso}${papel(j, fin)}</div><div>${dibujo(j, fin)}${accion(j)}</div></div></article>`, 'p' + J.n + ':' + J.i);
   const inp = $('#rval'); if (inp && !('ontouchstart' in window)) inp.focus();
 }
 // cuando cambia el esquema, el guía lo dice
@@ -576,7 +580,7 @@ function rondaE() {
   pinta(`${barra('Examen', pips(E.l.length, E.i))}<article class="r-parte"><div class="r-cab">${orgTag(j)}</div><div class="r-et">El caso</div><div class="r-caso">${textoPlano(j.txt, j)}</div><div class="r-et" style="margin-top:10px">Pregunta</div><div class="r-preg" style="margin-top:0">${fs(j.preg)}</div>
     <div class="r-et" style="margin-top:12px">Hazlo en tu papel y escribe los resultados</div>
     ${pide.map((c, k) => `<div class="r-res"><label for="ex${k}">${fs(c.lhs)} =</label><input id="ex${k}" inputmode="decimal" autocomplete="off" value="${(E.val && E.val[k]) || ''}"><span class="r-us">${c.units.slice().sort().map(u => `<button type="button" class="r-u ${(E.un && E.un[k]) === u ? 'on' : ''}" data-eu="${k}|${u}">${u}</button>`).join('')}</span></div>`).join('')}
-    ${E.msg ? `<div class="r-msg ko" style="margin-top:8px">${E.msg}</div>` : ''}<div class="r-row"><button type="button" class="r-b pri big" data-a="e:ok">Entregar este</button></div></article>`);
+    ${E.msg ? `<div class="r-msg ko" style="margin-top:8px">${E.msg}</div>` : ''}<div class="r-row"><button type="button" class="r-b pri big" data-a="e:ok">Entregar este</button></div></article>`, 'e' + E.i);
 }
 function leeE() { E.val = $$('[id^=ex]').map(i => i.value); }
 function clicE(a, el) {
