@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Problemas de Distribución</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bebas+Neue&family=Anton&family=Bangers&family=Archivo+Black&family=Russo+One&family=Fredoka:wght@600&family=Baloo+2:wght@700&family=Righteous&family=Alfa+Slab+One&display=swap">
+<style>
+/* Layout: un cuadro eléctrico oscuro con 9 interruptores; cada interruptor lleva la letra y el color de su juego, para que el sitio ayude a recordar. */
+:root{
+  --bg:#1b1d22; --panel:#262a31; --fg:#f2f4f7; --muted:#aab2bd; --rail:#3a404a; --accent:#ffc21a;
+  --fb:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:var(--fb);font-size:17px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px;
+  background-image:repeating-linear-gradient(90deg,transparent 0 58px,rgba(201,128,64,.12) 58px 60px)}
+.w{max-width:980px;margin:0 auto;display:grid;gap:18px}
+h1{font-family:"Bebas Neue","Arial Narrow",sans-serif;font-weight:400;font-size:clamp(44px,10vw,78px);line-height:.95;margin:0;letter-spacing:.01em;color:var(--accent);text-wrap:balance}
+.lead{margin:0;max-width:60ch;color:var(--muted)}
+.lead b{color:var(--fg)}
+.cuadro{background:var(--panel);border:2px solid var(--rail);border-radius:10px;padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.j{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center;text-decoration:none;color:#fff;background:var(--c1);border-radius:8px;padding:14px;border-left:8px solid var(--c2);min-height:92px}
+.j:hover,.j:focus-visible{outline:3px solid var(--c2);outline-offset:2px}
+.n{grid-row:span 2;font-family:"Bebas Neue",sans-serif;font-size:44px;line-height:1;color:var(--c2);font-variant-numeric:tabular-nums}
+.t{font-family:var(--f);font-size:23px;line-height:1.1;text-wrap:balance}
+.s{font-size:14px;color:#d9dee6}
+.nota{font-size:14px;color:var(--muted);margin:0;max-width:62ch}
+.visor{position:fixed;inset:0;z-index:20;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr)}
+.visor header{display:flex;gap:10px;align-items:center;padding-top:calc(8px + env(safe-area-inset-top,0px));padding-bottom:8px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));background:var(--panel);border-bottom:2px solid var(--rail)}
+.visor button{font:inherit;font-weight:700;background:var(--accent);color:#1b1d22;border:0;border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
+.visor button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.visor span{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.visor iframe{width:100%;height:100%;border:0;background:var(--bg)}
+</style>
+</head><body>
+<div class="w">
+  <header style="display:grid;gap:10px">
+    <h1>Problemas de Distribución</h1>
+    <p class="lead">Nueve juegos, <b>uno por tipo de problema</b>. Cada uno tiene su letra y sus colores. Toca uno para jugar.</p>
+  </header>
+  <nav class="cuadro" aria-label="Los 9 juegos">
+    <a class="j" href="fal.html" style="--c1:#2c2620;--c2:#ff8c1a;--f:'Bebas Neue',sans-serif"><span class="n">1</span><span class="t" style="font-size:30px">Fallo de aislamiento</span><span class="s">R total, Id, Va y Vd</span></a>
+    <a class="j" href="con.html" style="--c1:#43181c;--c2:#ff6b5e;--f:'Anton',sans-serif"><span class="n">2</span><span class="t">La persona toca la carcasa</span><span class="s">Los 3 esquemas, Ih, It y riesgo</span></a>
+    <a class="j" href="sol.html" style="--c1:#36214f;--c2:#c99bff;--f:'Bangers',cursive"><span class="n">3</span><span class="t" style="letter-spacing:.03em">Solo la persona</span><span class="s">Tipo de contacto, Ih y efectos</span></a>
+    <a class="j" href="tie.html" style="--c1:#1d3a24;--c2:#7ed957;--f:'Archivo Black',sans-serif"><span class="n">4</span><span class="t" style="font-size:20px">Toma de tierra y diferencial</span><span class="s">Vc = Rt · Id y Rmáx</span></a>
+    <a class="j" href="mix.html" style="--c1:#163052;--c2:#5fb4ff;--f:'Russo One',sans-serif"><span class="n">5</span><span class="t">Circuito mixto</span><span class="s">Esquemas 1 → 2 → 3 y vuelta</span></a>
+    <a class="j" href="tri.html" style="--c1:#3d3210;--c2:#ffd400;--f:'Fredoka',sans-serif"><span class="n">6</span><span class="t">Triángulo de potencias</span><span class="s">φ, Q y S</span></a>
+    <a class="j" href="com.html" style="--c1:#11394a;--c2:#4fd2ff;--f:'Baloo 2',sans-serif"><span class="n">7</span><span class="t">Compensación del factor de potencia</span><span class="s">Q1, Q2, Qc y C en µF</span></a>
+    <a class="j" href="rlc.html" style="--c1:#331a3b;--c2:#ff7ac8;--f:'Righteous',sans-serif"><span class="n">8</span><span class="t">Corriente alterna R-L-C</span><span class="s">XL, XC, Z, I, φ, P, Q y S</span></a>
+    <a class="j" href="cdt.html" style="--c1:#3a2516;--c2:#e39a4f;--f:'Alfa Slab One',serif"><span class="n">9</span><span class="t" style="font-size:20px">Caída de tensión y sección</span><span class="s">e, V que llega y sección del cable</span></a>
+  </nav>
+  <p class="nota">Dentro de cada juego, «← Volver al menú» vuelve a su portada, y el botón amarillo de arriba vuelve a los 9 juegos. El progreso se guarda en este móvil.</p>
+</div>
+<div class="visor" id="visor" hidden><header><button type="button" id="cerrar">← Los 9 juegos</button><span id="nombre"></span></header><iframe id="marco" title="Juego"></iframe></div>
+<script>
+const visor = document.getElementById('visor'), marco = document.getElementById('marco');
+document.querySelectorAll('.j').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); marco.src = a.getAttribute('href'); document.getElementById('nombre').textContent = a.querySelector('.t').textContent; visor.hidden = false; document.body.style.overflow = 'hidden';
+}));
+document.getElementById('cerrar').addEventListener('click', () => { visor.hidden = true; marco.src = 'about:blank'; document.body.style.overflow = ''; });
+</script>
+
+</body></html>
